@@ -12,6 +12,7 @@ import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ai.tomorrow.findnews.R;
+import ai.tomorrow.findnews.databinding.GridViewItemBinding;
 
 public class NewsGridAdapter extends RecyclerView.Adapter<NewsGridAdapter.NewsViewHolder>{
 
@@ -27,15 +28,7 @@ public class NewsGridAdapter extends RecyclerView.Adapter<NewsGridAdapter.NewsVi
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
-        Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.grid_view_item;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
-
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        NewsViewHolder viewHolder = new NewsViewHolder(view);
-
-        return viewHolder;
+        return new NewsViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(viewGroup.getContext())));
 
     }
 
@@ -52,12 +45,13 @@ public class NewsGridAdapter extends RecyclerView.Adapter<NewsGridAdapter.NewsVi
 
 
     class NewsViewHolder extends RecyclerView.ViewHolder{
+
         TextView newsTextView;
 
-        public NewsViewHolder(View itemView){
-            super(itemView);
+        public NewsViewHolder(GridViewItemBinding binding){
+            super(binding.getRoot());
 
-            newsTextView = itemView.findViewById(R.id.item_text);
+            newsTextView = binding.itemText;
 
         }
 
