@@ -26,6 +26,8 @@ import ai.tomorrow.findnews.Model.Article;
 import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
 import cz.msebera.android.httpclient.Header;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class SearchNewsFragment extends Fragment {
 
@@ -33,6 +35,8 @@ public class SearchNewsFragment extends Fragment {
 
     private NewsGridAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private Realm realm;
+    private RealmResults<Article> articles;
 
     @Nullable
     @Override
@@ -44,9 +48,12 @@ public class SearchNewsFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new NewsGridAdapter(100);
-        mRecyclerView.setAdapter(mAdapter);
+        Realm.deleteRealm(Realm.getDefaultConfiguration());
+        realm = Realm.getDefaultInstance();
 
+        mAdapter = new NewsGridAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+        fetchArticle(1);
 
         return binding.getRoot();
 
@@ -66,6 +73,9 @@ public class SearchNewsFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
+                    Article.insertArticlesIntoDatabse(articleJsonResults, realm);
+                    articles = realm.where(Article.class).findAll();
+                    mAdapter.submitList(articles);
 //                    newArticles = Article.fromJSONArray(articleJsonResults);
 
 
@@ -84,6 +94,10 @@ public class SearchNewsFragment extends Fragment {
 
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
 
 }
