@@ -12,6 +12,7 @@ buildscript {
         version_lifecycle_extensions = "2.0.0"
         version_navigation = "1.0.0"
         version_recyclerview = "1.0.0"
+        versions_lifecycle = "2.0.0"
     }
 
     repositories {

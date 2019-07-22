@@ -1,20 +1,15 @@
-package ai.tomorrow.findnews.SearchNews;
+package ai.tomorrow.findnews.searchNews;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ai.tomorrow.findnews.Model.Article;
-import ai.tomorrow.findnews.R;
+import ai.tomorrow.findnews.model.Article;
 import ai.tomorrow.findnews.databinding.GridViewItemBinding;
 
 public class NewsGridAdapter extends ListAdapter<Article, NewsGridAdapter.NewsViewHolder> {

@@ -1,12 +1,10 @@
-package ai.tomorrow.findnews.Model;
+package ai.tomorrow.findnews.model;
 
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 
 import io.realm.Realm;
 import io.realm.RealmList;

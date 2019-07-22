@@ -5,6 +5,6 @@
 
     <fragment
         android:id="@+id/searchNewsFragment"
-        android:name="ai.tomorrow.findnews.SearchNews.SearchNewsFragment"
+        android:name="ai.tomorrow.findnews.searchNews.SearchNewsFragment"
         android:label="SearchNewsFragment" />
 </navigation>

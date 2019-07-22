@@ -19,7 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 
+    lintOptions {
+        abortOnError false
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -35,6 +40,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    // Architecture components
+    implementation "androidx.lifecycle:lifecycle-runtime:$versions_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions_lifecycle"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$versions_lifecycle"
+
 
     // Core with Ktx
     implementation "androidx.core:core-ktx:$version_core"

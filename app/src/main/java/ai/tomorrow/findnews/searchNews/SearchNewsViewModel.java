@@ -1,18 +1,13 @@
-package ai.tomorrow.findnews.SearchNews;
+package ai.tomorrow.findnews.searchNews;
 
-
-import android.os.Bundle;
+import android.app.Application;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -22,41 +17,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ai.tomorrow.findnews.Model.Article;
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
+import ai.tomorrow.findnews.model.Article;
 import cz.msebera.android.httpclient.Header;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class SearchNewsFragment extends Fragment {
+public class SearchNewsViewModel extends AndroidViewModel {
 
-    private String TAG = SearchNewsFragment.class.getSimpleName();
+    private static String TAG = SearchNewsViewModel.class.getSimpleName();
 
-    private NewsGridAdapter mAdapter;
-    private RecyclerView mRecyclerView;
     private Realm realm;
-    private RealmResults<Article> articles;
+//    private RealmResults<Article> articles;
+    public MutableLiveData<RealmResults<Article>> articles = new MutableLiveData<RealmResults<Article>>();
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup viewGroup, @Nullable Bundle savedInstanceState) {
 
-        FragmentSearchNewsBinding binding = FragmentSearchNewsBinding.inflate(getLayoutInflater(), viewGroup, false);
-
-        mRecyclerView = (RecyclerView) binding.newsGrid;
-
-        mRecyclerView.setHasFixedSize(true);
-
+    public SearchNewsViewModel(@NonNull Application application) {
+        super(application);
         Realm.deleteRealm(Realm.getDefaultConfiguration());
         realm = Realm.getDefaultInstance();
-
-        mAdapter = new NewsGridAdapter();
-        mRecyclerView.setAdapter(mAdapter);
         fetchArticle(1);
-
-        return binding.getRoot();
-
     }
 
 
@@ -74,9 +53,8 @@ public class SearchNewsFragment extends Fragment {
                 try {
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Article.insertArticlesIntoDatabse(articleJsonResults, realm);
-                    articles = realm.where(Article.class).findAll();
-                    mAdapter.submitList(articles);
-//                    newArticles = Article.fromJSONArray(articleJsonResults);
+                    articles.setValue(realm.where(Article.class).findAll());
+//                    mAdapter.submitList(articles);
 
 
                 } catch (JSONException e) {
@@ -95,9 +73,23 @@ public class SearchNewsFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    protected void onCleared() {
+        super.onCleared();
         realm.close();
     }
 
+    public static class Factory extends ViewModelProvider.NewInstanceFactory {
+        @NonNull
+        private final Application mApplication;
+
+        public Factory(@NonNull Application application) {
+            mApplication = application;
+        }
+
+        @Override
+        public <T extends ViewModel> T create(Class<T> modelClass) {
+            //noinspection unchecked
+            return (T) new SearchNewsViewModel(mApplication);
+        }
+    }
 }
