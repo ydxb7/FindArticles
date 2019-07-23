@@ -22,26 +22,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Thumbnail -->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:src="@tools:sample/backgrounds/scenic"
-                android:background="@android:color/holo_blue_dark"
-                app:imageUrl="@{article.thumbnail}"/>
-
             <!-- Headline -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/space_really_small"
                 android:text="@{article.headline}"
+                android:textSize="@dimen/text_small"/>
+
+            <!-- Snippet -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_really_small"
+                android:text="@{article.snippet}"
                 android:textSize="@dimen/text_ultra_small"/>
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-
 
 </layout>
