@@ -9,14 +9,17 @@ import javax.annotation.Nonnull;
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.database.util.RealmResultsLiveData;
 import io.realm.Realm;
+import io.realm.RealmModel;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
-public class ArticleDao extends Dao<Article> {
+public class ArticleDao<T extends RealmModel> {
+
+    private Realm db;
 
     public ArticleDao(Realm db){
-        super(db);
+        this.db = db;
     }
 
     public LiveData<RealmResults<Article>> findAll(){

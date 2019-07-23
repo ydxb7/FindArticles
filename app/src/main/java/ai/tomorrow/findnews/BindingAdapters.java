@@ -10,11 +10,11 @@ import ai.tomorrow.findnews.searchnews.NewsGridAdapter;
 
 public class BindingAdapters{
 
-//    @BindingAdapter("listData")
-//    public static void bindRecyclerView(RecyclerView recyclerView, List<Article> data){
-//        NewsGridAdapter adapter = (NewsGridAdapter) recyclerView.getAdapter();
-//        adapter.submitList(data);
-//
-//    }
+    @BindingAdapter("listData")
+    public static void bindRecyclerView(RecyclerView recyclerView, List<Article> data){
+        NewsGridAdapter adapter = (NewsGridAdapter) recyclerView.getAdapter();
+        adapter.submitList(data);
+
+    }
 }
 

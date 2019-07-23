@@ -50,13 +50,7 @@ public class SearchNewsFragment extends Fragment {
         mAdapter = new NewsGridAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
-        viewModel.getArticles().observe(this, new Observer<RealmResults<Article>>() {
-            @Override
-            public void onChanged(RealmResults<Article> articles) {
-                mAdapter.submitList(articles);
-                Log.d(TAG, "articles = " + articles);
-            }
-        });
+
 
         return mBinding.getRoot();
 
