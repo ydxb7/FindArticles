@@ -11,34 +11,51 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.databinding.GridViewItemBinding;
 import ai.tomorrow.findnews.databinding.GridViewItemNoImageBinding;
+import io.realm.RealmResults;
 
-public class NewsGridAdapter extends ListAdapter<Article, RecyclerView.ViewHolder> {
+public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 //        RecyclerView.Adapter<NewsGridAdapter.NewsViewHolder>{
 
     private static final String TAG = NewsGridAdapter.class.getSimpleName();
     private static final int VIEW_TYPE_WITH_IMAGE = 0;
     private static final int VIEW_TYPE_NO_IMAGE = 1;
 
-    private static DiffUtil.ItemCallback<Article> diffCallback = new DiffUtil.ItemCallback<Article>() {
+    private List<? extends Article> articles;
 
-        @Override
-        public boolean areItemsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
-            return oldItem == newItem;
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
-            return oldItem.getId().equals(newItem.getId());
-        }
-    };
+//    private static DiffUtil.ItemCallback<Article> diffCallback = new DiffUtil.ItemCallback<Article>() {
+//
+//        @Override
+//        public boolean areItemsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
+//            return oldItem == newItem;
+//        }
+//
+//        @Override
+//        public boolean areContentsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
+//            return oldItem.getId().equals(newItem.getId());
+//        }
+//    };
 
 
     public NewsGridAdapter(){
-        super(diffCallback);
+//        super(diffCallback);
+    }
+
+    public void setArticles(List<Article> articles){
+        if (this.articles == null){
+            this.articles = articles;
+            notifyDataSetChanged();
+        } else {
+            Integer oldSize = this.articles.size();
+            this.articles = articles;
+            notifyItemInserted(oldSize);
+        }
+
     }
 
     /**
@@ -53,12 +70,17 @@ public class NewsGridAdapter extends ListAdapter<Article, RecyclerView.ViewHolde
      */
     @Override
     public int getItemViewType(int position) {
-        Article article = getItem(position);
+        Article article = this.articles.get(position);
         if (article.getThumbnail() == null){
             return VIEW_TYPE_NO_IMAGE;
         } else {
             return VIEW_TYPE_WITH_IMAGE;
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        return articles == null ? 0 : articles.size();
     }
 
     @NonNull
@@ -80,7 +102,7 @@ public class NewsGridAdapter extends ListAdapter<Article, RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Article article = getItem(position);
+        Article article = this.articles.get(position);
         int viewType = getItemViewType(position);
         switch (viewType){
             case VIEW_TYPE_WITH_IMAGE:

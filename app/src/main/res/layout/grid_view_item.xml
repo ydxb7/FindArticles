@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:src="@tools:sample/backgrounds/scenic"
-                android:background="@android:color/holo_blue_dark"
                 app:imageUrl="@{article.thumbnail}"/>
 
             <!-- Headline -->

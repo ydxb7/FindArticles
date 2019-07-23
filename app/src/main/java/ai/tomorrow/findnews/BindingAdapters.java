@@ -23,11 +23,11 @@ public class BindingAdapters{
     private static String TAG = BindingAdapters.class.getSimpleName();
     private static String BASE_URL = "http://www.nytimes.com/";
 
-    @BindingAdapter("listData")
-    public static void bindRecyclerView(RecyclerView recyclerView, List<Article> data){
-        NewsGridAdapter adapter = (NewsGridAdapter) recyclerView.getAdapter();
-        adapter.submitList(data);
-    }
+//    @BindingAdapter("listData")
+//    public static void bindRecyclerView(RecyclerView recyclerView, List<Article> data){
+//        NewsGridAdapter adapter = (NewsGridAdapter) recyclerView.getAdapter();
+//        adapter.submitList(data);
+//    }
 
     @BindingAdapter("imageUrl")
     public static void bindImage(ImageView imageView, String imgUrl){

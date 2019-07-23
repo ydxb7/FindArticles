@@ -39,9 +39,7 @@ public class SearchNewsViewModel extends AndroidViewModel {
     public LiveData<RealmResults<Article>> getArticles(){
         return articles;
     }
-//    public LiveData<List<Article>> getArticles(){
-//        return _articles;
-//    }
+
 
 
     public SearchNewsViewModel(@NonNull Application application) {
@@ -50,11 +48,11 @@ public class SearchNewsViewModel extends AndroidViewModel {
         realm = Realm.getDefaultInstance();
         dao = new ArticleDao(realm);
         articles = dao.findAll();
-        fetchArticle(1);
+        fetchArticle(0);
     }
 
 
-    private void fetchArticle(int page){
+    public void fetchArticle(int page){
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
         String key = "iyRiXtZ9sd78MbN2h6E20udA2NQwamal";
@@ -72,10 +70,7 @@ public class SearchNewsViewModel extends AndroidViewModel {
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Article.insertArticlesIntoDatabse(articleJsonResults, realm);
 
-
-                    Log.d(TAG, "articles.getValue() = " + articles.getValue());
-                    Log.d(TAG, "dao.findAll() = " + dao.findAll());
-
+                    Log.d(TAG, "articles.getValue().size() = " + articles.getValue().size());
 
 
                 } catch (JSONException e) {
