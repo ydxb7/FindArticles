@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.model;
+package ai.tomorrow.findnews.database.entity;
 
 import android.util.Log;
 

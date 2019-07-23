@@ -1,10 +1,11 @@
-package ai.tomorrow.findnews.searchNews;
+package ai.tomorrow.findnews.searchnews;
 
 import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,7 +18,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ai.tomorrow.findnews.model.Article;
+import java.util.List;
+
+import ai.tomorrow.findnews.database.dao.ArticleDao;
+import ai.tomorrow.findnews.database.entity.Article;
+import ai.tomorrow.findnews.database.util.RealmResultsLiveData;
 import cz.msebera.android.httpclient.Header;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -27,14 +32,24 @@ public class SearchNewsViewModel extends AndroidViewModel {
     private static String TAG = SearchNewsViewModel.class.getSimpleName();
 
     private Realm realm;
+    private ArticleDao dao;
 //    private RealmResults<Article> articles;
-    public MutableLiveData<RealmResults<Article>> articles = new MutableLiveData<RealmResults<Article>>();
+//    private MutableLiveData<RealmResults<Article>> articles = new MutableLiveData<RealmResults<Article>>();
+    private LiveData<RealmResults<Article>> articles ;
+    public LiveData<RealmResults<Article>> getArticles(){
+        return articles;
+    }
+//    public LiveData<List<Article>> getArticles(){
+//        return _articles;
+//    }
 
 
     public SearchNewsViewModel(@NonNull Application application) {
         super(application);
         Realm.deleteRealm(Realm.getDefaultConfiguration());
         realm = Realm.getDefaultInstance();
+        dao = new ArticleDao(realm);
+        articles = dao.findAll();
         fetchArticle(1);
     }
 
@@ -53,8 +68,12 @@ public class SearchNewsViewModel extends AndroidViewModel {
                 try {
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Article.insertArticlesIntoDatabse(articleJsonResults, realm);
-                    articles.setValue(realm.where(Article.class).findAll());
-//                    mAdapter.submitList(articles);
+//                    articles.setValue(dao.findAll().getValue());
+//                    articles = dao.findAll();
+                    Log.d(TAG, "articles.getValue() = " + articles.getValue());
+                    Log.d(TAG, "dao.findAll() = " + dao.findAll());
+//                    articles = dao.findAll();
+//                    articles.setValue(realm.where(Article.class).findAll());
 
 
                 } catch (JSONException e) {

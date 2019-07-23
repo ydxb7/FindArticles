@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.searchNews;
+package ai.tomorrow.findnews.searchnews;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ai.tomorrow.findnews.model.Article;
+import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.databinding.GridViewItemBinding;
 
 public class NewsGridAdapter extends ListAdapter<Article, NewsGridAdapter.NewsViewHolder> {
