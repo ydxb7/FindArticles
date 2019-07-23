@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/searchNewsFragment">
 
     <fragment
         android:id="@+id/searchNewsFragment"
         android:name="ai.tomorrow.findnews.searchnews.SearchNewsFragment"
-        android:label="SearchNewsFragment" />
+        android:label="SearchNewsFragment" >
+        <action
+            android:id="@+id/action_searchNewsFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment"
+            app:popUpTo="@+id/searchNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleDetailFragment"
+        android:name="ai.tomorrow.findnews.ArticleDetail.ArticleDetailFragment"
+        android:label="fragment_article_detail"
+        tools:layout="@layout/fragment_article_detail" >
+        <argument
+            android:name="selectedArticle"
+            app:argType="android.os.Parcelable" />
+    </fragment>
 </navigation>

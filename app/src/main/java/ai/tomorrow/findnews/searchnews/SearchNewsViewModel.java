@@ -40,6 +40,10 @@ public class SearchNewsViewModel extends AndroidViewModel {
         return articles;
     }
 
+    private MutableLiveData<Article> navigateToSelectedArticle = new MutableLiveData<>();
+    public LiveData<Article> getNavigateToSelectedArticle(){
+        return navigateToSelectedArticle;
+    }
 
 
     public SearchNewsViewModel(@NonNull Application application) {
@@ -87,6 +91,15 @@ public class SearchNewsViewModel extends AndroidViewModel {
         });
 
     }
+
+    public void displayArticleDetails(Article article){
+        navigateToSelectedArticle.setValue(article);
+    }
+
+    public void displayArticleDetailsComplete(){
+        navigateToSelectedArticle.setValue(null);
+    }
+
 
     @Override
     protected void onCleared() {

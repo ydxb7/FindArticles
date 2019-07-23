@@ -11,8 +11,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+
+import org.parceler.Parcel;
+import org.parceler.Parcels;
 
 import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.database.entity.Article;
@@ -52,7 +58,12 @@ public class SearchNewsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
 
-        mAdapter = new NewsGridAdapter();
+        mAdapter = new NewsGridAdapter(new NewsGridAdapter.ItemClickListener() {
+            @Override
+            public void onListItemClick(Article article) {
+                viewModel.displayArticleDetails(article);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -79,15 +90,21 @@ public class SearchNewsFragment extends Fragment {
             }
         });
 
+        viewModel.getNavigateToSelectedArticle().observe(this, new Observer<Article>() {
+            @Override
+            public void onChanged(Article article) {
+                if (null == article){
+                    Navigation.findNavController(getView()).navigate(SearchNewsFragmentDirections
+                            .actionSearchNewsFragmentToArticleDetailFragment(Parcels.wrap(article)));
 
+
+                }
+            }
+        });
 
         return mBinding.getRoot();
 
     }
-
-
-
-
 
 
 }

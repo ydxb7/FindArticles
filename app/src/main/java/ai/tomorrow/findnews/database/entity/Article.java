@@ -5,12 +5,14 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
+@Parcel
 public class Article extends RealmObject {
 
     private static String TAG = Article.class.getSimpleName();

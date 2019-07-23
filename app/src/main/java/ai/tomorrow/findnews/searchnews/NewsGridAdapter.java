@@ -18,6 +18,7 @@ import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.databinding.GridViewItemBinding;
 import ai.tomorrow.findnews.databinding.GridViewItemNoImageBinding;
 import io.realm.RealmResults;
+import kotlin.Unit;
 
 public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 //        RecyclerView.Adapter<NewsGridAdapter.NewsViewHolder>{
@@ -28,6 +29,8 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<? extends Article> articles;
 
+////    // TODO (3) Create a final private ListItemClickListener called mOnClickListener
+    private final ItemClickListener mOnClickListener;
 //    private static DiffUtil.ItemCallback<Article> diffCallback = new DiffUtil.ItemCallback<Article>() {
 //
 //        @Override
@@ -41,8 +44,15 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        }
 //    };
 
+    // TODO (1) Add an interface called ListItemClickListener
+    // TODO (2) Within that interface, define a void method called onListItemClick that takes an int as a parameter
+    public interface ItemClickListener{
+        void onListItemClick(Article article);
+    }
 
-    public NewsGridAdapter(){
+
+    public NewsGridAdapter(ItemClickListener listener){
+        mOnClickListener = listener;
 //        super(diffCallback);
     }
 
@@ -104,6 +114,12 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Article article = this.articles.get(position);
         int viewType = getItemViewType(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnClickListener.onListItemClick(article);
+            }
+        });
         switch (viewType){
             case VIEW_TYPE_WITH_IMAGE:
                 ((NewsViewHolder)holder).bind(article);
@@ -117,7 +133,7 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    class NewsViewHolder extends RecyclerView.ViewHolder{
+    class NewsViewHolder extends RecyclerView.ViewHolder {
 
         GridViewItemBinding mBinding;
 
