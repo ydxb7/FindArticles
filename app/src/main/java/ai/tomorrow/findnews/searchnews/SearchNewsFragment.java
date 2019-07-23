@@ -93,11 +93,10 @@ public class SearchNewsFragment extends Fragment {
         viewModel.getNavigateToSelectedArticle().observe(this, new Observer<Article>() {
             @Override
             public void onChanged(Article article) {
-                if (null == article){
+                if (null != article){
                     Navigation.findNavController(getView()).navigate(SearchNewsFragmentDirections
                             .actionSearchNewsFragmentToArticleDetailFragment(Parcels.wrap(article)));
-
-
+                    viewModel.displayArticleDetailsComplete();
                 }
             }
         });
