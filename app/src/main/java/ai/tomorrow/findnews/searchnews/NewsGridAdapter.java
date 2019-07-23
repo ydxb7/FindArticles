@@ -17,7 +17,6 @@ public class NewsGridAdapter extends ListAdapter<Article, NewsGridAdapter.NewsVi
 
     private static final String TAG = NewsGridAdapter.class.getSimpleName();
 
-    private int mNumberItems;
 
     private static DiffUtil.ItemCallback<Article> diffCallback = new DiffUtil.ItemCallback<Article>() {
 
@@ -61,16 +60,20 @@ public class NewsGridAdapter extends ListAdapter<Article, NewsGridAdapter.NewsVi
     class NewsViewHolder extends RecyclerView.ViewHolder{
 
         TextView newsTextView;
+        GridViewItemBinding mBinding;
 
         public NewsViewHolder(GridViewItemBinding binding){
             super(binding.getRoot());
 
-            newsTextView = binding.itemText;
+            mBinding = binding;
 
         }
 
         void bind(Article article) {
-            newsTextView.setText(article.getHeadline());
+            mBinding.setArticle(article);
+            // This is important, because it forces the data binding to execute immediately,
+            // which allows the RecyclerView to make the correct view size measurements
+            mBinding.executePendingBindings();
         }
 
     }

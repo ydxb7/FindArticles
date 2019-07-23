@@ -2,18 +2,51 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
     <data>
-        <!--<variable-->
-            <!--name="property"-->
-            <!--type="com.example.android.marsrealestate.network.MarsProperty" />-->
+        <variable
+            name="article"
+            type="ai.tomorrow.findnews.database.entity.Article" />
     </data>
 
-    <TextView
-        android:id="@+id/item_text"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/article_item_card_view_id"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp"/>
+        android:layout_margin="@dimen/space_small"
+        android:elevation="1dp"
+        card_view:cardCornerRadius="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Thumbnail -->
+            <ImageView
+                android:id="@+id/article_item_thumbnail_image_view_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                tools:src="@tools:sample/backgrounds/scenic"
+                android:background="@android:color/holo_blue_dark"
+                app:imageUrl="@{article.thumbnail}"/>
+
+            <!-- Headline -->
+            <TextView
+                android:id="@+id/article_item_headline_text_view_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/article_item_thumbnail_image_view_id"
+                android:layout_margin="@dimen/space_really_small"
+                android:text="@{article.headline}"
+                android:textSize="@dimen/text_ultra_small"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 
 

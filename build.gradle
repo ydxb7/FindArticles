@@ -16,6 +16,7 @@ buildscript {
         versions_lifecycle = "2.0.0"
         version_room = "2.0.0"
         version_kotlin = "1.3.21"
+        version_cardView = "28.0.0"
     }
 
     repositories {

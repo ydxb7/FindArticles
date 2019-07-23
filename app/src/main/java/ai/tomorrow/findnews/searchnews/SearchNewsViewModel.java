@@ -68,12 +68,11 @@ public class SearchNewsViewModel extends AndroidViewModel {
                 try {
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Article.insertArticlesIntoDatabse(articleJsonResults, realm);
-//                    articles.setValue(dao.findAll().getValue());
-//                    articles = dao.findAll();
+
+
                     Log.d(TAG, "articles.getValue() = " + articles.getValue());
                     Log.d(TAG, "dao.findAll() = " + dao.findAll());
-//                    articles = dao.findAll();
-//                    articles.setValue(realm.where(Article.class).findAll());
+
 
 
                 } catch (JSONException e) {
