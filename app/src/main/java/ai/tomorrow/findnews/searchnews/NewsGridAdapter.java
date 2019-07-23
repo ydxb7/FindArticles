@@ -1,14 +1,17 @@
 package ai.tomorrow.findnews.searchnews;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.databinding.GridViewItemBinding;
 
@@ -40,7 +43,8 @@ public class NewsGridAdapter extends ListAdapter<Article, NewsGridAdapter.NewsVi
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
-        return new NewsViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(viewGroup.getContext())));
+        return new NewsViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+                R.layout.grid_view_item, viewGroup, false));
 
     }
 
@@ -49,13 +53,7 @@ public class NewsGridAdapter extends ListAdapter<Article, NewsGridAdapter.NewsVi
         Article article = getItem(position);
         holder.bind(article);
     }
-
-//    @Override
-//    public int getItemCount() {
-//        return ;
-//    }
-
-
+    
 
     class NewsViewHolder extends RecyclerView.ViewHolder{
 

@@ -61,6 +61,9 @@ public class SearchNewsViewModel extends AndroidViewModel {
         RequestParams params = new RequestParams();
         params.put("api-key", key);
         params.put("page", page);
+        params.put("sort", "newest");
+        params.put("fq", "news_desk:(arts)");
+
 
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
