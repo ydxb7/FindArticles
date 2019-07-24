@@ -14,17 +14,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
-import org.parceler.Parcel;
-import org.parceler.Parcels;
-
 import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.Settings.SettingFragment;
+import ai.tomorrow.findnews.settings.SettingFragment;
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
 import ai.tomorrow.findnews.util.EndlessRecyclerViewScrollListener;

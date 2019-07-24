@@ -3,28 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="ai.tomorrow.findnews.settings.SettingViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+
+
+
         <CheckBox
-            android:id="@+id/settings_fragment_arts_check_box_id"
+            android:id="@+id/pref_arts_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/news_desk_values_arts"/>
 
         <CheckBox
-            android:id="@+id/settings_fragment_fashion_check_box_id"
+            android:id="@+id/pref_fashion_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/news_desk_values_fashion"/>
 
         <CheckBox
-            android:id="@+id/settings_fragment_sports_check_box_id"
+            android:id="@+id/pref_sports_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/news_desk_values_sports"/>
+
+
+        <Button
+            android:id="@+id/settings_fragment_save_button_id"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/space_medium"
+            android:onClick="@{() -> viewModel.onClickSavedButtom()}"
+            android:text="@string/save"/>
 
     </LinearLayout>
 </layout>

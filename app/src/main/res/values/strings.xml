@@ -4,4 +4,5 @@
     <string name="news_desk_values_arts">Arts</string>
     <string name="news_desk_values_fashion"><![CDATA[Fashion & Style]]></string>
     <string name="news_desk_values_sports">Sports</string>
+    <string name="save">Save</string>
 </resources>
