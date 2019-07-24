@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.databinding.FragmentSettingBinding;
 
 public class SettingViewModel extends ViewModel {
@@ -18,17 +19,29 @@ public class SettingViewModel extends ViewModel {
     private final FragmentSettingBinding mBinding;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
+    private Context mContext;
 
-    private static final String PREF_ARTS_KEY = "pref_arts_key";
-    private static final String PREF_FASHION_KEY = "pref_fashion_key";
-    private static final String PREF_SPORTS_KEY = "pref_sports_key";
+    private String PREF_ARTS_KEY;
+    private String PREF_FASHION_KEY;
+    private String PREF_SPORTS_KEY;
 
-    private static final Boolean PREF_ARTS_DEFAULT = false;
-    private static final Boolean PREF_FASHION_DEFAULT = false;
-    private static final Boolean PREF_SPORTS_DEFAULT = false;
+    private Boolean PREF_ARTS_DEFAULT;
+    private Boolean PREF_FASHION_DEFAULT;
+    private Boolean PREF_SPORTS_DEFAULT;
 
     public SettingViewModel(Context context, FragmentSettingBinding binding){
+
+        mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        PREF_ARTS_DEFAULT =  mContext.getResources().getBoolean(R.bool.pref_arts_default);
+        PREF_FASHION_DEFAULT =  mContext.getResources().getBoolean(R.bool.pref_fashion_default);
+        PREF_SPORTS_DEFAULT =  mContext.getResources().getBoolean(R.bool.pref_sports_default);
+
+        PREF_ARTS_KEY = mContext.getResources().getString(R.string.pref_arts_key);
+        PREF_FASHION_KEY = mContext.getResources().getString(R.string.pref_fashion_key);
+        PREF_SPORTS_KEY = mContext.getResources().getString(R.string.pref_sports_key);
+
 
         Boolean myArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
         Boolean myFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);

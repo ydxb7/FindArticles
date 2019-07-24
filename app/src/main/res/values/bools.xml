@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="pref_arts_default">false</bool>
+    <bool name="pref_fashion_default">false</bool>
+    <bool name="pref_sports_default">false</bool>
+
+</resources>
