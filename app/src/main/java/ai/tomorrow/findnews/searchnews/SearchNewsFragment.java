@@ -4,6 +4,9 @@ package ai.tomorrow.findnews.searchnews;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,6 +24,7 @@ import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import ai.tomorrow.findnews.R;
+import ai.tomorrow.findnews.Settings.SettingFragment;
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
 import ai.tomorrow.findnews.util.EndlessRecyclerViewScrollListener;
@@ -101,9 +105,26 @@ public class SearchNewsFragment extends Fragment {
             }
         });
 
+        setHasOptionsMenu(true);
         return mBinding.getRoot();
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_articles_menu, menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings){
+//            Navigation.findNavController(getView()).navigate(R.id.action_searchNewsFragment_to_settingFragment);
+            SettingFragment settingFragment = new SettingFragment();
+            settingFragment.show(getFragmentManager(), SettingFragment.class.getSimpleName());
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
