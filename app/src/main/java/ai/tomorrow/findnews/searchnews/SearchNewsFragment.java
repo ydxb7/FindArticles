@@ -95,7 +95,7 @@ public class SearchNewsFragment extends Fragment {
             public void onChanged(Article article) {
                 if (null != article){
                     Navigation.findNavController(getView()).navigate(SearchNewsFragmentDirections
-                            .actionSearchNewsFragmentToArticleDetailFragment(Parcels.wrap(article)));
+                            .actionSearchNewsFragmentToArticleDetailFragment(article));
                     viewModel.displayArticleDetailsComplete();
                 }
             }

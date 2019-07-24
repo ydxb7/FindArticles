@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_article_detail" >
         <argument
             android:name="selectedArticle"
-            app:argType="android.os.Parcelable" />
+            app:argType="ai.tomorrow.findnews.database.entity.Article" />
     </fragment>
 </navigation>

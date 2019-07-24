@@ -29,7 +29,7 @@ public class ArticleDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail, container, false);
-        mArticle = Parcels.unwrap(ArticleDetailFragmentArgs.fromBundle(getArguments()).getSelectedArticle());
+        mArticle = ArticleDetailFragmentArgs.fromBundle(getArguments()).getSelectedArticle();
 
         Log.d(TAG, "mArticle = " + mArticle);
 
