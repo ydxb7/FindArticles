@@ -21,20 +21,18 @@
             android:id="@+id/date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/selected_date"/>
-
-        <Button
-            android:id="@+id/date_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pick_date"
-            android:onClick="@{() -> viewModel.showDatePickerDialog()}"/>
+            android:text="@string/begin_date"/>
 
         <EditText
             android:id="@+id/date_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/pick_date" />
+            android:hint="@string/pick_date"
+            android:editable="false"
+            android:focusable="false"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
+            android:onClick="@{() -> viewModel.showDatePickerDialog()}"/>
 
 
         <androidx.appcompat.widget.AppCompatSpinner
