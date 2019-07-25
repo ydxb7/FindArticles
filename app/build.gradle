@@ -88,4 +88,6 @@ dependencies {
 
     // preference
     implementation 'com.android.support:preference-v7:28.0.0'
+
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.1'
 }

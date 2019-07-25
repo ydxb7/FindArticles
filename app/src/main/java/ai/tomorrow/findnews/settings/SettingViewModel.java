@@ -2,17 +2,23 @@ package ai.tomorrow.findnews.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
+
 import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.databinding.FragmentSettingBinding;
 
-public class SettingViewModel extends ViewModel {
+public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDateSetListener{
 
     private static final String TAG = SettingViewModel.class.getSimpleName();
 
@@ -20,6 +26,7 @@ public class SettingViewModel extends ViewModel {
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
     private Context mContext;
+    private DatePickerDialog dpd;
 
     private String PREF_ARTS_KEY;
     private String PREF_FASHION_KEY;
@@ -84,8 +91,44 @@ public class SettingViewModel extends ViewModel {
         mEditor.commit();
     }
 
+    public void showDatePickerDialog(){
+        Calendar now = Calendar.getInstance();
+            /*
+            It is recommended to always create a new instance whenever you need to show a Dialog.
+            The sample app is reusing them because it is useful when looking for regressions
+            during testing
+             */
+        if (dpd == null) {
+            dpd = DatePickerDialog.newInstance(
+                    this,
+                    now.get(Calendar.YEAR),
+                    now.get(Calendar.MONTH),
+                    now.get(Calendar.DAY_OF_MONTH)
+            );
+        } else {
+            dpd.initialize(
+                    this,
+                    now.get(Calendar.YEAR),
+                    now.get(Calendar.MONTH),
+                    now.get(Calendar.DAY_OF_MONTH)
+            );
+        }
+        dpd.setTitle("Date Picker");
+//        dpd.setAccentColor(Color.parseColor("#9C27B0"));
+        dpd.setOnCancelListener(dialog -> {
+            Log.d("DatePickerDialog", "Dialog was cancelled");
+            dpd = null;
+        });
+        dpd.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "Datepickerdialog");
+    }
 
-
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = "You picked the following date: "+dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        mBinding.dateTextview.setText(date);
+        mBinding.dateEditText.setText(date);
+        dpd = null;
+    }
 
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
