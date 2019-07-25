@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import ai.tomorrow.findnews.R;
@@ -52,7 +53,15 @@ public class SettingFragment extends DialogFragment {
 //        mEditor = mPreferences.edit();
 //        editor.putBoolean("mypref_whatever", false);
 //        editor.commit();
-
+        viewModel.getNavigateBack().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isNagigateBack) {
+                if (isNagigateBack){
+                    getDialog().dismiss();
+                    viewModel.navigateBackCompelete();
+                }
+            }
+        });
 
         return mBinding.getRoot();
     }

@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -45,6 +47,15 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
 
     private int mBginDate;
 
+    private MutableLiveData<Boolean> navigateBack = new MutableLiveData<>();
+    public LiveData<Boolean> getNavigateBack(){
+        return navigateBack;
+    }
+
+    public void navigateBackCompelete(){
+        navigateBack.setValue(false);
+    }
+
     public SettingViewModel(Context context, FragmentSettingBinding binding) {
 
         mContext = context;
@@ -67,10 +78,10 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         Boolean mySports = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
         int myBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
 
-        Log.d(TAG, "myArts = " + myArts);
-        Log.d(TAG, "myFashion = " + myFashion);
-        Log.d(TAG, "mySports = " + mySports);
-        Log.d(TAG, "myBgindate = " + myBgindate);
+//        Log.d(TAG, "myArts = " + myArts);
+//        Log.d(TAG, "myFashion = " + myFashion);
+//        Log.d(TAG, "mySports = " + mySports);
+//        Log.d(TAG, "myBgindate = " + myBgindate);
 
         mBinding = binding;
 
@@ -110,6 +121,8 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         mEditor.putInt(PREF_BEGIN_DATE_KEY, mBginDate);
 
         mEditor.commit();
+
+        navigateBack.setValue(true);
     }
 
     public void showDatePickerDialog() {
