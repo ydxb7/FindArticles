@@ -170,7 +170,6 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         mBginDate = year * 10000 + monthOfYear * 100 + dayOfMonth;
     }
 
-
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
         @NonNull
         private final Context mContext;

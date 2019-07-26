@@ -30,6 +30,7 @@ public class SearchNewsFragment extends Fragment {
 
     private String TAG = SearchNewsFragment.class.getSimpleName();
     private FragmentSearchNewsBinding mBinding;
+    private SearchNewsViewModel mViewModel;
 
     private NewsGridAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -48,10 +49,10 @@ public class SearchNewsFragment extends Fragment {
         SearchNewsViewModel.Factory factory = new SearchNewsViewModel.Factory(
                 getActivity().getApplication());
 
-        final SearchNewsViewModel viewModel = ViewModelProviders.of(this, factory)
+        mViewModel = ViewModelProviders.of(this, factory)
                 .get(SearchNewsViewModel.class);
 
-        mBinding.setSearchViewModel(viewModel);
+        mBinding.setSearchViewModel(mViewModel);
 
         mRecyclerView = (RecyclerView) mBinding.newsGrid;
 
@@ -61,7 +62,7 @@ public class SearchNewsFragment extends Fragment {
         mAdapter = new NewsGridAdapter(new NewsGridAdapter.ItemClickListener() {
             @Override
             public void onListItemClick(Article article) {
-                viewModel.displayArticleDetails(article);
+                mViewModel.displayArticleDetails(article);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -74,35 +75,46 @@ public class SearchNewsFragment extends Fragment {
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                Log.d(TAG, "viewModel.getArticles().getValue().size() = " + viewModel.getArticles().getValue().size());
+                Log.d(TAG, "viewModel.getArticles().getValue().size() = " + mViewModel.getArticles().getValue().size());
                 Log.d(TAG, "page = " + page);
-                viewModel.fetchArticle(page);
-                Log.d(TAG, "viewModel.getArticles().getValue().size() = " + viewModel.getArticles().getValue().size());
+                mViewModel.fetchArticle(page);
+                Log.d(TAG, "viewModel.getArticles().getValue().size() = " + mViewModel.getArticles().getValue().size());
             }
         };
         // Adds the scroll listener to RecyclerView
         mRecyclerView.addOnScrollListener(scrollListener);
 
-        viewModel.getArticles().observe(this, new Observer<RealmResults<Article>>() {
+        mViewModel.getArticles().observe(this, new Observer<RealmResults<Article>>() {
             @Override
             public void onChanged(RealmResults<Article> articles) {
                 mAdapter.setArticles(articles);
             }
         });
 
-        viewModel.getNavigateToSelectedArticle().observe(this, new Observer<Article>() {
+        mViewModel.getNavigateToSelectedArticle().observe(this, new Observer<Article>() {
             @Override
             public void onChanged(Article article) {
                 if (null != article){
                     Navigation.findNavController(getView()).navigate(SearchNewsFragmentDirections
                             .actionSearchNewsFragmentToArticleDetailFragment(article));
-                    viewModel.displayArticleDetailsComplete();
+                    mViewModel.displayArticleDetailsComplete();
                 }
             }
         });
 
         setHasOptionsMenu(true);
         return mBinding.getRoot();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mViewModel.isSearchChanged()){
+            mViewModel.updateSearch();
+            scrollListener.resetState();
+        }
+        Log.d(TAG, "onResume");
 
     }
 
@@ -119,6 +131,14 @@ public class SearchNewsFragment extends Fragment {
 //            Navigation.findNavController(getView()).navigate(R.id.action_searchNewsFragment_to_settingFragment);
             SettingFragment settingFragment = new SettingFragment();
             settingFragment.show(getFragmentManager(), SettingFragment.class.getSimpleName());
+            settingFragment.setCallback(() -> {
+                if (mViewModel.isSearchChanged()){
+                    mViewModel.updateSearch();
+                    scrollListener.resetState();
+                    Log.d(TAG, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                }
+            });
+
         }
 
         return super.onOptionsItemSelected(item);

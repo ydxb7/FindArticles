@@ -60,8 +60,10 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (this.articles == null){
             this.articles = articles;
             notifyDataSetChanged();
+        } else if (articles.size() == 0){
+            notifyDataSetChanged();
         } else {
-            Integer oldSize = this.articles.size();
+            int oldSize = this.articles.size();
             this.articles = articles;
             notifyItemInserted(oldSize);
         }

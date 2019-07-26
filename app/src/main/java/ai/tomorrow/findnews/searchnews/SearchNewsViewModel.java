@@ -120,34 +120,39 @@ public class SearchNewsViewModel extends AndroidViewModel {
         params.put("api-key", key);
         params.put("page", page);
 
-        String deskValues = "";
-
-        Boolean myArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
-        Boolean myFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);
-        Boolean mySports = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
+        boolean myArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
+        boolean myFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);
+        boolean mySports = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
         String mySort = mPreferences.getString(PREF_SORT_KEY, PREF_SORT_VALUE_NEWEST);
         int myBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
 
+        String deskValues = "";
+
         if (myArts){
-            deskValues += "Arts";
+            deskValues += "Arts ";
         }
 
         if (myFashion){
-            deskValues += "Fashion";
+            deskValues += "Fashion ";
         }
 
         if (mySports){
-            deskValues += "Sports";
+            deskValues += "Sports ";
         }
 
         params.put("fq", "news_desk:(" + deskValues + ")");
-        params.put("sort", mySort);
 
-        if (myBgindate != 0){
-            params.put("begin_date", myBgindate);
+        if (mySort.equals(PREF_SORT_VALUE_NEWEST) || mySort.equals(PREF_SORT_VALUE_OLDEST)){
+            params.put("sort", mySort);
+        } else if (mySort.equals(PREF_SORT_VALUE_ASCENDING)){
+            params.put("sort", "asc");
+        } else if (mySort.equals(PREF_SORT_VALUE_DESCENDING)){
+            params.put("sort", "desc");
         }
 
-
+//        if (myBgindate != 0){
+//            params.put("begin_date", myBgindate);
+//        }
 
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
@@ -158,23 +163,19 @@ public class SearchNewsViewModel extends AndroidViewModel {
 
                     Log.d(TAG, "articles.getValue().size() = " + articles.getValue().size());
 
-
                 } catch (JSONException e) {
                     Log.d(TAG, "Error int getting response or docs.", e);
                 }
-
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-
             }
         });
-
     }
 
-    private boolean isSearchChanged() {
+    public boolean isSearchChanged() {
         if (mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT) != mArts ||
                 mFashion != mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT) ||
                 mSports != mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT) ||
@@ -188,6 +189,10 @@ public class SearchNewsViewModel extends AndroidViewModel {
         return false;
     }
 
+    public void updateSearch(){
+        dao.deleteAll();
+        fetchArticle(0);
+    }
 
     public void displayArticleDetails(Article article) {
         navigateToSelectedArticle.setValue(article);

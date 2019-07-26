@@ -18,7 +18,7 @@ import ai.tomorrow.findnews.databinding.FragmentSettingBinding;
 public class SettingFragment extends DialogFragment {
 
     private FragmentSettingBinding mBinding;
-
+    private SettingFragmentCallback settingFragmentCallback;
 
     @Nullable
     @Override
@@ -40,6 +40,7 @@ public class SettingFragment extends DialogFragment {
                 if (isNagigateBack){
                     getDialog().dismiss();
                     viewModel.navigateBackCompelete();
+                    settingFragmentCallback.onDialogDismiss();
                 }
             }
         });
@@ -47,5 +48,12 @@ public class SettingFragment extends DialogFragment {
         return mBinding.getRoot();
     }
 
+    public void setCallback(SettingFragmentCallback settingFragmentCallback) {
+        this.settingFragmentCallback = settingFragmentCallback;
+    }
+
+    public interface SettingFragmentCallback{
+        void onDialogDismiss();
+    }
 
 }
