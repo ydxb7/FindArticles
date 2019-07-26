@@ -18,18 +18,6 @@ import ai.tomorrow.findnews.databinding.FragmentSettingBinding;
 public class SettingFragment extends DialogFragment {
 
     private FragmentSettingBinding mBinding;
-//    private SharedPreferences mPreferences;
-//    private SharedPreferences.Editor mEditor;
-//
-//    private static final String PREF_ARTS_KEY = "pref_arts_key";
-//    private static final String PREF_FASHION_KEY = "pref_fashion_key";
-//    private static final String PREF_SPORTS_KEY = "pref_sports_key";
-//
-//    private static final Boolean PREF_ARTS_DEFAULT = false;
-//    private static final Boolean PREF_FASHION_DEFAULT = false;
-//    private static final Boolean PREF_SPORTS_DEFAULT = false;
-
-
 
 
     @Nullable
@@ -46,13 +34,6 @@ public class SettingFragment extends DialogFragment {
 
         mBinding.setViewModel(viewModel);
 
-//        mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        Boolean mypref = mPreferences.getBoolean("mypref_whatever", true);
-//
-//
-//        mEditor = mPreferences.edit();
-//        editor.putBoolean("mypref_whatever", false);
-//        editor.commit();
         viewModel.getNavigateBack().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isNagigateBack) {
@@ -67,12 +48,4 @@ public class SettingFragment extends DialogFragment {
     }
 
 
-
-
-//    public void onClickSaved(){
-//
-//
-//
-//
-//    }
 }

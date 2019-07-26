@@ -125,8 +125,12 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         navigateBack.setValue(true);
     }
 
+    public void onClickCleanButton(){
+        mEditor.putInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
+        mBinding.dateEditText.setText("");
+    }
+
     public void showDatePickerDialog() {
-        int myBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
         Calendar now = Calendar.getInstance();
             /*
             It is recommended to always create a new instance whenever you need to show a Dialog.

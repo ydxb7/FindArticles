@@ -6,10 +6,10 @@
     <string name="news_desk_values_sports">Sports</string>
     <string name="save">Save</string>
 
-    <string name="pref_sort_newest">Newest</string>
-    <string name="pref_sort_oldest">Oldest</string>
-    <string name="pref_sort_ascending">Ascending</string>
-    <string name="pref_sort_descending">Descending</string>
+    <string name="pref_sort_newest">newest</string>
+    <string name="pref_sort_oldest">oldest</string>
+    <string name="pref_sort_ascending">ascending</string>
+    <string name="pref_sort_descending">descending</string>
     <integer name="pref_begin_date_default">0</integer>
 
     <string name="pref_arts_key">pref_arts_key</string>
@@ -21,6 +21,7 @@
     <string name="selected_date">The date you picked will be shown here.</string>
     <string name="pick_date">Pick Date</string>
     <string name="begin_date">Begin date:</string>
+    <string name="clean">clean</string>
 
 
 </resources>

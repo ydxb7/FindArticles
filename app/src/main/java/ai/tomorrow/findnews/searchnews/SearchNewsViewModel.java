@@ -1,6 +1,7 @@
 package ai.tomorrow.findnews.searchnews;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -20,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.database.dao.ArticleDao;
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.database.util.RealmResultsLiveData;
@@ -31,23 +34,76 @@ public class SearchNewsViewModel extends AndroidViewModel {
 
     private static String TAG = SearchNewsViewModel.class.getSimpleName();
 
+    private String PREF_ARTS_KEY;
+    private String PREF_FASHION_KEY;
+    private String PREF_SPORTS_KEY;
+    private String PREF_SORT_KEY;
+    private String PREF_BEGIN_DATE_KEY;
+
+    private Boolean PREF_ARTS_DEFAULT;
+    private Boolean PREF_FASHION_DEFAULT;
+    private Boolean PREF_SPORTS_DEFAULT;
+    private String PREF_SORT_DEFAULT;
+    private int PREF_BEGIN_DATE_DEFAULT;
+
+    private String PREF_SORT_VALUE_NEWEST;
+    private String PREF_SORT_VALUE_OLDEST;
+    private String PREF_SORT_VALUE_ASCENDING;
+    private String PREF_SORT_VALUE_DESCENDING;
+
+    private SharedPreferences mPreferences;
+    private Boolean mArts;
+    private Boolean mFashion;
+    private Boolean mSports;
+    private Boolean mSort;
+    private int mBgindate;
+
+
     private Realm realm;
     private ArticleDao dao;
-//    private RealmResults<Article> articles;
+    //    private RealmResults<Article> articles;
 //    private MutableLiveData<RealmResults<Article>> articles = new MutableLiveData<RealmResults<Article>>();
-    private LiveData<RealmResults<Article>> articles ;
-    public LiveData<RealmResults<Article>> getArticles(){
+    private LiveData<RealmResults<Article>> articles;
+
+    public LiveData<RealmResults<Article>> getArticles() {
         return articles;
     }
 
     private MutableLiveData<Article> navigateToSelectedArticle = new MutableLiveData<>();
-    public LiveData<Article> getNavigateToSelectedArticle(){
+
+    public LiveData<Article> getNavigateToSelectedArticle() {
         return navigateToSelectedArticle;
     }
 
 
     public SearchNewsViewModel(@NonNull Application application) {
         super(application);
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(application);
+
+        PREF_ARTS_DEFAULT = application.getResources().getBoolean(R.bool.pref_arts_default);
+        PREF_FASHION_DEFAULT = application.getResources().getBoolean(R.bool.pref_fashion_default);
+        PREF_SPORTS_DEFAULT = application.getResources().getBoolean(R.bool.pref_sports_default);
+        PREF_SORT_DEFAULT = application.getResources().getString(R.string.pref_sort_newest);
+        PREF_BEGIN_DATE_DEFAULT = application.getResources().getInteger(R.integer.pref_begin_date_default);
+
+        PREF_ARTS_KEY = application.getResources().getString(R.string.pref_arts_key);
+        PREF_FASHION_KEY = application.getResources().getString(R.string.pref_fashion_key);
+        PREF_SPORTS_KEY = application.getResources().getString(R.string.pref_sports_key);
+        PREF_SORT_KEY = application.getResources().getString(R.string.pref_sort_key);
+        PREF_BEGIN_DATE_KEY = application.getResources().getString(R.string.pref_begin_date_key);
+
+        PREF_SORT_VALUE_NEWEST = application.getResources().getString(R.string.pref_sort_newest);
+        PREF_SORT_VALUE_OLDEST = application.getResources().getString(R.string.pref_sort_oldest);
+        PREF_SORT_VALUE_ASCENDING = application.getResources().getString(R.string.pref_sort_ascending);
+        PREF_SORT_VALUE_DESCENDING = application.getResources().getString(R.string.pref_sort_descending);
+
+        mArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
+        mFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);
+        mSports = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
+        mSort = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
+        mBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
+
         Realm.deleteRealm(Realm.getDefaultConfiguration());
         realm = Realm.getDefaultInstance();
         dao = new ArticleDao(realm);
@@ -56,15 +112,41 @@ public class SearchNewsViewModel extends AndroidViewModel {
     }
 
 
-    public void fetchArticle(int page){
+    public void fetchArticle(int page) {
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
         String key = "iyRiXtZ9sd78MbN2h6E20udA2NQwamal";
         RequestParams params = new RequestParams();
         params.put("api-key", key);
         params.put("page", page);
-        params.put("sort", "newest");
-        params.put("fq", "news_desk:(arts)");
+
+        String deskValues = "";
+
+        Boolean myArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
+        Boolean myFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);
+        Boolean mySports = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
+        String mySort = mPreferences.getString(PREF_SORT_KEY, PREF_SORT_VALUE_NEWEST);
+        int myBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
+
+        if (myArts){
+            deskValues += "Arts";
+        }
+
+        if (myFashion){
+            deskValues += "Fashion";
+        }
+
+        if (mySports){
+            deskValues += "Sports";
+        }
+
+        params.put("fq", "news_desk:(" + deskValues + ")");
+        params.put("sort", mySort);
+
+        if (myBgindate != 0){
+            params.put("begin_date", myBgindate);
+        }
+
 
 
         client.get(url, params, new JsonHttpResponseHandler() {
@@ -92,11 +174,26 @@ public class SearchNewsViewModel extends AndroidViewModel {
 
     }
 
-    public void displayArticleDetails(Article article){
+    private boolean isSearchChanged() {
+        if (mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT) != mArts ||
+                mFashion != mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT) ||
+                mSports != mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT) ||
+                mBgindate != mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT)) {
+            mArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
+            mFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);
+            mSports = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
+            mBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
+            return true;
+        }
+        return false;
+    }
+
+
+    public void displayArticleDetails(Article article) {
         navigateToSelectedArticle.setValue(article);
     }
 
-    public void displayArticleDetailsComplete(){
+    public void displayArticleDetailsComplete() {
         navigateToSelectedArticle.setValue(null);
     }
 
