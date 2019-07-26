@@ -20,14 +20,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.database.dao.ArticleDao;
 import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.database.util.RealmResultsLiveData;
+import ai.tomorrow.findnews.util.DataLoadingStatus;
 import cz.msebera.android.httpclient.Header;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class SearchNewsViewModel extends AndroidViewModel {
@@ -58,7 +57,6 @@ public class SearchNewsViewModel extends AndroidViewModel {
     private Boolean mSort;
     private int mBgindate;
 
-
     private Realm realm;
     private ArticleDao dao;
     //    private RealmResults<Article> articles;
@@ -73,6 +71,14 @@ public class SearchNewsViewModel extends AndroidViewModel {
 
     public LiveData<Article> getNavigateToSelectedArticle() {
         return navigateToSelectedArticle;
+    }
+
+    public MutableLiveData<DataLoadingStatus> mStatus = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> isFinishLoading = new MutableLiveData<>();
+
+    public LiveData<Boolean> getIsFinishLoading(){
+        return isFinishLoading;
     }
 
 
@@ -104,6 +110,8 @@ public class SearchNewsViewModel extends AndroidViewModel {
         mSort = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
         mBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
 
+        mStatus.setValue(DataLoadingStatus.LOADING);
+        isFinishLoading.setValue(false);
         Realm.deleteRealm(Realm.getDefaultConfiguration());
         realm = Realm.getDefaultInstance();
         dao = new ArticleDao(realm);
@@ -128,31 +136,31 @@ public class SearchNewsViewModel extends AndroidViewModel {
 
         String deskValues = "";
 
-        if (myArts){
+        if (myArts) {
             deskValues += "\"Arts\" ";
         }
 
-        if (myFashion){
+        if (myFashion) {
             deskValues += "\"Fashion\" ";
         }
 
-        if (mySports){
+        if (mySports) {
             deskValues += "\"Sports\"";
         }
 
-        if (!deskValues.isEmpty()){
+        if (!deskValues.isEmpty()) {
             params.put("fq", "news_desk:(" + deskValues + ")");
         }
 
-        if (mySort.equals(PREF_SORT_VALUE_NEWEST) || mySort.equals(PREF_SORT_VALUE_OLDEST)){
+        if (mySort.equals(PREF_SORT_VALUE_NEWEST) || mySort.equals(PREF_SORT_VALUE_OLDEST)) {
             params.put("sort", mySort);
-        } else if (mySort.equals(PREF_SORT_VALUE_ASCENDING)){
+        } else if (mySort.equals(PREF_SORT_VALUE_ASCENDING)) {
             params.put("sort", "asc");
-        } else if (mySort.equals(PREF_SORT_VALUE_DESCENDING)){
+        } else if (mySort.equals(PREF_SORT_VALUE_DESCENDING)) {
             params.put("sort", "desc");
         }
 
-        if (myBgindate != 0){
+        if (myBgindate != 0) {
             params.put("begin_date", String.valueOf(myBgindate));
         }
 
@@ -161,7 +169,20 @@ public class SearchNewsViewModel extends AndroidViewModel {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
-                    Article.insertArticlesIntoDatabse(articleJsonResults, realm);
+                    RealmList<Article> articleRealmList = Article.parseJsonIntoArticleList(articleJsonResults, realm);
+
+                    try {
+                        // Open a transaction to store items into the realm
+                        realm.beginTransaction();
+                        realm.copyToRealmOrUpdate(articleRealmList);
+                        realm.commitTransaction();
+                        isFinishLoading.setValue(true);
+                    } catch (Exception e) {
+                        if (realm.isInTransaction()) {
+                            realm.cancelTransaction();
+                        }
+                        throw new RuntimeException(e);
+                    }
 
 //                    Log.d(TAG, "articles.getValue().size() = " + articles.getValue().size());
 
@@ -191,7 +212,9 @@ public class SearchNewsViewModel extends AndroidViewModel {
         return false;
     }
 
-    public void updateSearch(){
+    public void updateSearch() {
+        mStatus.setValue(DataLoadingStatus.LOADING);
+        isFinishLoading.setValue(false);
         dao.deleteAll();
         fetchArticle(0);
     }

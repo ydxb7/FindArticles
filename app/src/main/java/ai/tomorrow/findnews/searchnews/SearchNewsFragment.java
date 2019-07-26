@@ -91,6 +91,19 @@ public class SearchNewsFragment extends Fragment {
             }
         });
 
+        mViewModel.getIsFinishLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isFinishLoading) {
+                if (isFinishLoading){
+                    if (mViewModel.getArticles().getValue().isEmpty()){
+                        mViewModel.mStatus.setValue(DataLoadingStatus.EMPTY);
+                    } else {
+                        mViewModel.mStatus.setValue(DataLoadingStatus.DONE);
+                    }
+                }
+            }
+        });
+
         mViewModel.getNavigateToSelectedArticle().observe(this, new Observer<Article>() {
             @Override
             public void onChanged(Article article) {
@@ -135,7 +148,6 @@ public class SearchNewsFragment extends Fragment {
                 if (mViewModel.isSearchChanged()){
                     mViewModel.updateSearch();
                     scrollListener.resetState();
-                    Log.d(TAG, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 }
             });
 

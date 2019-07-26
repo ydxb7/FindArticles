@@ -17,6 +17,7 @@ import java.util.List;
 
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.searchnews.NewsGridAdapter;
+import ai.tomorrow.findnews.util.DataLoadingStatus;
 
 public class BindingAdapters{
 
@@ -50,6 +51,22 @@ public class BindingAdapters{
         }
     }
 
+    @BindingAdapter("movieApiStatus")
+    public static void bindStatus(ImageView statusImageView, DataLoadingStatus status) {
+        switch (status) {
+            case DataLoadingStatus.LOADING:
+                statusImageView.setVisibility(View.VISIBLE);
+                statusImageView.setImageResource(R.drawable.loading_animation);
+
+            case DataLoadingStatus.ERROR:
+                statusImageView.setVisibility(View.VISIBLE);
+                statusImageView.setImageResource(R.drawable.ic_connection_error);
+
+            case DataLoadingStatus.DONE:
+                statusImageView.setVisibility(View.GONE);
+            
+        }
+    }
 
 }
 

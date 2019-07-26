@@ -99,7 +99,7 @@ public class Article extends RealmObject implements Parcelable {
         return article;
     }
 
-    public static void insertArticlesIntoDatabse(JSONArray articleJsonResults, Realm realm){
+    public static RealmList<Article> parseJsonIntoArticleList(JSONArray articleJsonResults, Realm realm){
         RealmList<Article> articleRealmList = new RealmList<>();
         for (int i = 0; i < articleJsonResults.length(); i++){
             try {
@@ -108,9 +108,7 @@ public class Article extends RealmObject implements Parcelable {
                 Log.d(TAG, "get Jsonobject error!");
             }
         }
-
-        // Open a transaction to store items into the realm
-        realm.executeTransaction(r -> r.copyToRealmOrUpdate(articleRealmList));
+        return articleRealmList;
     }
 
 
