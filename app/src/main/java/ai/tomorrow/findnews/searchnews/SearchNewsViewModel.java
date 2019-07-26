@@ -152,9 +152,9 @@ public class SearchNewsViewModel extends AndroidViewModel {
             params.put("sort", "desc");
         }
 
-//        if (myBgindate != 0){
-//            params.put("begin_date", myBgindate);
-//        }
+        if (myBgindate != 0){
+            params.put("begin_date", String.valueOf(myBgindate));
+        }
 
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
