@@ -129,18 +129,20 @@ public class SearchNewsViewModel extends AndroidViewModel {
         String deskValues = "";
 
         if (myArts){
-            deskValues += "Arts ";
+            deskValues += "\"Arts\" ";
         }
 
         if (myFashion){
-            deskValues += "Fashion ";
+            deskValues += "\"Fashion\" ";
         }
 
         if (mySports){
-            deskValues += "Sports ";
+            deskValues += "\"Sports\"";
         }
 
-        params.put("fq", "news_desk:(" + deskValues + ")");
+        if (!deskValues.isEmpty()){
+            params.put("fq", "news_desk:(" + deskValues + ")");
+        }
 
         if (mySort.equals(PREF_SORT_VALUE_NEWEST) || mySort.equals(PREF_SORT_VALUE_OLDEST)){
             params.put("sort", mySort);
@@ -161,7 +163,7 @@ public class SearchNewsViewModel extends AndroidViewModel {
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
                     Article.insertArticlesIntoDatabse(articleJsonResults, realm);
 
-                    Log.d(TAG, "articles.getValue().size() = " + articles.getValue().size());
+//                    Log.d(TAG, "articles.getValue().size() = " + articles.getValue().size());
 
                 } catch (JSONException e) {
                     Log.d(TAG, "Error int getting response or docs.", e);
