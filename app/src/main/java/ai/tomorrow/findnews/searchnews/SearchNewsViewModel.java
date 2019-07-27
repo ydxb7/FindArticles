@@ -216,14 +216,6 @@ public class SearchNewsViewModel extends AndroidViewModel {
 
         @Override
         public boolean onQueryTextChange(String newText) {
-//            if (!newText.isEmpty() && newText.length() >= 3){
-//                mQuery = newText;
-//            } else {
-//                mQuery = "";
-//            }
-//
-//            updateSearch();
-
             return false;
         }
     };

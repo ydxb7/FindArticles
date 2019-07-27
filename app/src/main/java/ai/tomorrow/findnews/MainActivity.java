@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import ai.tomorrow.findnews.ArticleDetail.ArticleDetailFragment;
 
@@ -18,12 +19,18 @@ public class MainActivity extends AppCompatActivity {
 
     private String TAG = MainActivity.class.getSimpleName();
     private Fragment mCurrentFragment;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Find the navController from nav_host_fragment
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        // By calling NavigationUI.setupActionBarWithNavController
+        NavigationUI.setupActionBarWithNavController(this, navController);
 
 //        NavController navController= Navigation.findNavController(MainActivity.this,R.id.nav_graph);
 //
@@ -37,7 +44,12 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-//    @Override
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp();
+    }
+
+    //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //
 //        if(mCurrentFragment instanceof ArticleDetailFragment){
