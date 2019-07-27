@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import ai.tomorrow.findnews.R;
@@ -32,6 +33,7 @@ public class SearchNewsFragment extends Fragment {
     private String TAG = SearchNewsFragment.class.getSimpleName();
     private FragmentSearchNewsBinding mBinding;
     private SearchNewsViewModel mViewModel;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private NewsGridAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -59,6 +61,7 @@ public class SearchNewsFragment extends Fragment {
 
         mRecyclerView.setHasFixedSize(true);
 
+        mSwipeRefreshLayout = mBinding.swipeLayout;
 
         mAdapter = new NewsGridAdapter(new NewsGridAdapter.ItemClickListener() {
             @Override
@@ -101,6 +104,8 @@ public class SearchNewsFragment extends Fragment {
                     } else {
                         mViewModel.mStatus.setValue(DataLoadingStatus.DONE);
                     }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    Log.d(TAG, "mSwipeRefreshLayout.setRefreshing(false);");
                 }
             }
         });
@@ -113,6 +118,25 @@ public class SearchNewsFragment extends Fragment {
                             .actionSearchNewsFragmentToArticleDetailFragment(article));
                     mViewModel.displayArticleDetailsComplete();
                 }
+            }
+        });
+
+        // set SwipeRefreshLayout
+        // 设置转动颜色变化
+        mSwipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_dark,
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_green_light);
+
+        // 刷新监听
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                // 开始转动
+                mSwipeRefreshLayout.setRefreshing(true);
+
+                mViewModel.swipRefresh();
+                scrollListener.resetState();
             }
         });
 

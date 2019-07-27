@@ -219,6 +219,12 @@ public class SearchNewsViewModel extends AndroidViewModel {
         fetchArticle(0);
     }
 
+    public void swipRefresh(){
+        isFinishLoading.setValue(false);
+        dao.deleteAll();
+        fetchArticle(0);
+    }
+
     public void displayArticleDetails(Article article) {
         navigateToSelectedArticle.setValue(article);
     }
