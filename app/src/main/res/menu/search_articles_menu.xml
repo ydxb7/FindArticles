@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="2"
         android:title="@string/settings"
         android:icon="@drawable/baseline_settings_black_24"
         app:iconTint="@android:color/white"

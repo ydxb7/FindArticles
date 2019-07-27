@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
+    // Find the navController and then call navController.navigateUp
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp();

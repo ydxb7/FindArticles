@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/searchNewsFragment"
         android:name="ai.tomorrow.findnews.searchnews.SearchNewsFragment"
-        android:label="SearchNewsFragment" >
+        android:label="Search Articles" >
         <action
             android:id="@+id/action_searchNewsFragment_to_articleDetailFragment"
             app:destination="@id/articleDetailFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/articleDetailFragment"
         android:name="ai.tomorrow.findnews.ArticleDetail.ArticleDetailFragment"
-        android:label="fragment_article_detail"
+        android:label="Article"
         tools:layout="@layout/fragment_article_detail" >
         <argument
             android:name="selectedArticle"

@@ -8,8 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -17,6 +21,8 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -42,12 +48,11 @@ public class ArticleDetailFragment extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail, container, false);
         mArticle = ArticleDetailFragmentArgs.fromBundle(getArguments()).getSelectedArticle();
 
-        Log.d(TAG, "mArticle = " + mArticle);
-
         myWebView = mBinding.webview;
 
         setWebView();
 
+        setHasOptionsMenu(true);
 
         return mBinding.getRoot();
     }
@@ -105,14 +110,34 @@ public class ArticleDetailFragment extends Fragment {
 
     }
 
-    public boolean canGoBack() {
-        return myWebView != null && myWebView.canGoBack();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.article_detail_menu, menu);
     }
 
-    public void goBack() {
-        if (myWebView != null) {
-            myWebView.goBack();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_share){
+            String textToShare = mArticle.getWebUrl();
+            prepareShareIntent(textToShare);
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
+    // Gets the article URL and setup the associated share intent to hook into the provider
+    public void prepareShareIntent(String textToShare) {
+        String mimeType = "text/plain";
+        String title = "Share Article";
+
+        ShareCompat.IntentBuilder.from(getActivity())
+                .setChooserTitle(title)
+                .setType(mimeType)
+                .setText(textToShare)
+                .startChooser();
+
+    }
 }
