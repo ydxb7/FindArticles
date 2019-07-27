@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,20 +52,35 @@ public class BindingAdapters{
         }
     }
 
-    @BindingAdapter("movieApiStatus")
+    @BindingAdapter("dataLoadStatus")
     public static void bindStatus(ImageView statusImageView, DataLoadingStatus status) {
         switch (status) {
-            case DataLoadingStatus.LOADING:
+            case LOADING:
                 statusImageView.setVisibility(View.VISIBLE);
                 statusImageView.setImageResource(R.drawable.loading_animation);
+                break;
 
-            case DataLoadingStatus.ERROR:
+            case ERROR:
                 statusImageView.setVisibility(View.VISIBLE);
                 statusImageView.setImageResource(R.drawable.ic_connection_error);
+                break;
 
-            case DataLoadingStatus.DONE:
+            case DONE:
                 statusImageView.setVisibility(View.GONE);
-            
+                break;
+
+            case EMPTY:
+                statusImageView.setVisibility(View.GONE);
+
+        }
+    }
+
+    @BindingAdapter("dataEmptyStatus")
+    public static void bindEmptyStatus(TextView statusTextView, DataLoadingStatus status) {
+        if (status == DataLoadingStatus.EMPTY){
+            statusTextView.setVisibility(View.VISIBLE);
+        } else {
+            statusTextView.setVisibility(View.GONE);
         }
     }
 

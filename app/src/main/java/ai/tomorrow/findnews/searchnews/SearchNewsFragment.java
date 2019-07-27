@@ -23,6 +23,7 @@ import ai.tomorrow.findnews.R;
 import ai.tomorrow.findnews.settings.SettingFragment;
 import ai.tomorrow.findnews.database.entity.Article;
 import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
+import ai.tomorrow.findnews.util.DataLoadingStatus;
 import ai.tomorrow.findnews.util.EndlessRecyclerViewScrollListener;
 import io.realm.RealmResults;
 
@@ -95,7 +96,7 @@ public class SearchNewsFragment extends Fragment {
             @Override
             public void onChanged(Boolean isFinishLoading) {
                 if (isFinishLoading){
-                    if (mViewModel.getArticles().getValue().isEmpty()){
+                    if (null == mViewModel.getArticles().getValue() || mViewModel.getArticles().getValue().isEmpty()){
                         mViewModel.mStatus.setValue(DataLoadingStatus.EMPTY);
                     } else {
                         mViewModel.mStatus.setValue(DataLoadingStatus.DONE);

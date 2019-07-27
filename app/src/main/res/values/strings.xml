@@ -22,6 +22,7 @@
     <string name="pick_date">Pick Date</string>
     <string name="begin_date">Begin date:</string>
     <string name="clean">clean</string>
+    <string name="no_results">No results</string>
 
 
 </resources>
