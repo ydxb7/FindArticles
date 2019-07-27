@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -56,6 +57,7 @@ public class SearchNewsViewModel extends AndroidViewModel {
     private Boolean mSports;
     private Boolean mSort;
     private int mBgindate;
+    private String mQuery = "";
 
     private Realm realm;
     private ArticleDao dao;
@@ -152,6 +154,10 @@ public class SearchNewsViewModel extends AndroidViewModel {
             params.put("fq", "news_desk:(" + deskValues + ")");
         }
 
+        if (!mQuery.isEmpty()){
+            params.put("q", mQuery);
+        }
+
         if (mySort.equals(PREF_SORT_VALUE_NEWEST) || mySort.equals(PREF_SORT_VALUE_OLDEST)) {
             params.put("sort", mySort);
         } else if (mySort.equals(PREF_SORT_VALUE_ASCENDING)) {
@@ -197,6 +203,30 @@ public class SearchNewsViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            mQuery = query;
+
+            updateSearch();
+
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+//            if (!newText.isEmpty() && newText.length() >= 3){
+//                mQuery = newText;
+//            } else {
+//                mQuery = "";
+//            }
+//
+//            updateSearch();
+
+            return false;
+        }
+    };
 
     public boolean isSearchChanged() {
         if (mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT) != mArts ||

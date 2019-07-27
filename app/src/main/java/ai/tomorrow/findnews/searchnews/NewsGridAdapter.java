@@ -3,6 +3,8 @@ package ai.tomorrow.findnews.searchnews;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ai.tomorrow.findnews.R;
@@ -20,7 +23,7 @@ import ai.tomorrow.findnews.databinding.GridViewItemNoImageBinding;
 import io.realm.RealmResults;
 import kotlin.Unit;
 
-public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //        RecyclerView.Adapter<NewsGridAdapter.NewsViewHolder>{
 
     private static final String TAG = NewsGridAdapter.class.getSimpleName();
@@ -28,9 +31,11 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int VIEW_TYPE_NO_IMAGE = 1;
 
     private List<? extends Article> articles;
+    private List<? extends Article> articlesFull;
 
 ////    // TODO (3) Create a final private ListItemClickListener called mOnClickListener
     private final ItemClickListener mOnClickListener;
+
 //    private static DiffUtil.ItemCallback<Article> diffCallback = new DiffUtil.ItemCallback<Article>() {
 //
 //        @Override
@@ -59,12 +64,14 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setArticles(List<Article> articles){
         if (this.articles == null){
             this.articles = articles;
+            this.articlesFull = new ArrayList<>(articles);
             notifyDataSetChanged();
         } else if (articles.size() == 0){
             notifyDataSetChanged();
         } else {
             int oldSize = this.articles.size();
             this.articles = articles;
+            this.articlesFull = new ArrayList<>(articles);
             notifyItemInserted(oldSize);
         }
 
@@ -174,6 +181,5 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
     }
-
 
 }

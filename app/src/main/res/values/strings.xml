@@ -23,6 +23,7 @@
     <string name="begin_date">Begin date:</string>
     <string name="clean">clean</string>
     <string name="no_results">No results</string>
+    <string name="search">Search</string>
 
 
 </resources>
