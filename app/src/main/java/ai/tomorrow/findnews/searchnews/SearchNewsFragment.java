@@ -146,17 +146,6 @@ public class SearchNewsFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (mViewModel.isSearchChanged()){
-            mViewModel.updateSearch();
-            scrollListener.resetState();
-        }
-        Log.d(TAG, "onResume");
-
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_articles_menu, menu);
