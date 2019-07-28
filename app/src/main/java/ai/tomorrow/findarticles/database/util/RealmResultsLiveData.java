@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.database.util;
+package ai.tomorrow.findarticles.database.util;
 
 import androidx.lifecycle.LiveData;
 

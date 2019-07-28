@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews;
+package ai.tomorrow.findarticles;
 
 import android.net.Uri;
 import android.util.Log;
@@ -16,9 +16,9 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.searchnews.NewsGridAdapter;
-import ai.tomorrow.findnews.util.DataLoadingStatus;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.searchnews.NewsGridAdapter;
+import ai.tomorrow.findarticles.util.DataLoadingStatus;
 
 public class BindingAdapters{
 

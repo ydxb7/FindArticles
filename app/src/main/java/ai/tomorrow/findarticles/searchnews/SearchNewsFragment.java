@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.searchnews;
+package ai.tomorrow.findarticles.searchnews;
 
 
 import android.os.Bundle;
@@ -22,12 +22,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.settings.SettingFragment;
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
-import ai.tomorrow.findnews.util.DataLoadingStatus;
-import ai.tomorrow.findnews.util.EndlessRecyclerViewScrollListener;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.databinding.FragmentSearchNewsBinding;
+import ai.tomorrow.findarticles.searchnews.SearchNewsFragmentDirections;
+import ai.tomorrow.findarticles.searchnews.SearchNewsViewModel;
+import ai.tomorrow.findarticles.settings.SettingFragment;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.util.DataLoadingStatus;
+import ai.tomorrow.findarticles.util.EndlessRecyclerViewScrollListener;
 import io.realm.RealmResults;
 
 public class SearchNewsFragment extends Fragment {
@@ -37,7 +39,7 @@ public class SearchNewsFragment extends Fragment {
     private SearchNewsViewModel mViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private NewsGridAdapter mAdapter;
+    private ai.tomorrow.findarticles.searchnews.NewsGridAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager layoutManager;
     // Store a member variable for the listener
@@ -65,7 +67,7 @@ public class SearchNewsFragment extends Fragment {
 
         mSwipeRefreshLayout = mBinding.swipeLayout;
 
-        mAdapter = new NewsGridAdapter(new NewsGridAdapter.ItemClickListener() {
+        mAdapter = new ai.tomorrow.findarticles.searchnews.NewsGridAdapter(new ai.tomorrow.findarticles.searchnews.NewsGridAdapter.ItemClickListener() {
             @Override
             public void onListItemClick(Article article) {
                 mViewModel.displayArticleDetails(article);

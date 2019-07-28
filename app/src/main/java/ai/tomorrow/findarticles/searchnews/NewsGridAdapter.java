@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.searchnews;
+package ai.tomorrow.findarticles.searchnews;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.databinding.GridViewItemBinding;
-import ai.tomorrow.findnews.databinding.GridViewItemNoImageBinding;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.databinding.GridViewItemBinding;
+import ai.tomorrow.findarticles.databinding.GridViewItemNoImageBinding;
 import io.realm.RealmResults;
 import kotlin.Unit;
 

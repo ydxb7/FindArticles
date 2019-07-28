@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FindNews</string>
+    <string name="app_name">FindArticles</string>
     <string name="settings">Settings</string>
     <string name="news_desk_values_arts">Arts</string>
     <string name="news_desk_values_fashion"><![CDATA[Fashion & Style]]></string>

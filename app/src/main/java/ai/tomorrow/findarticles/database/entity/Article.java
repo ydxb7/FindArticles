@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.database.entity;
+package ai.tomorrow.findarticles.database.entity;
 
 import android.os.Parcelable;
 import android.util.Log;

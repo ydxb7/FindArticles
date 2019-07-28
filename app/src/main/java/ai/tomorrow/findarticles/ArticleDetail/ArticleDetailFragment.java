@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.ArticleDetail;
+package ai.tomorrow.findarticles.ArticleDetail;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -28,11 +28,11 @@ import androidx.fragment.app.Fragment;
 
 import org.parceler.Parcels;
 
-import ai.tomorrow.findnews.MainActivity;
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.databinding.FragmentArticleDetailBinding;
-import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
+import ai.tomorrow.findarticles.ArticleDetail.ArticleDetailFragmentArgs;
+import ai.tomorrow.findarticles.MainActivity;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.databinding.FragmentArticleDetailBinding;
 
 
 public class ArticleDetailFragment extends Fragment {
