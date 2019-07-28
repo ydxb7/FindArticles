@@ -7,7 +7,7 @@ android {
     compileSdkVersion 28
 //    buildToolsVersion "29.0.0"
     defaultConfig {
-        applicationId "ai.tomorrow.findnews"
+        applicationId "ai.tomorrow.findarticles"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1

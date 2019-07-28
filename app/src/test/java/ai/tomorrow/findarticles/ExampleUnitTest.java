@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews;
+package ai.tomorrow.findarticles;
 
 import org.junit.Test;
 

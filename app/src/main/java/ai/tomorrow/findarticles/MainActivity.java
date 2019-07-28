@@ -1,19 +1,12 @@
-package ai.tomorrow.findnews;
+package ai.tomorrow.findarticles;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-
-import ai.tomorrow.findnews.ArticleDetail.ArticleDetailFragment;
 
 public class MainActivity extends AppCompatActivity {
 

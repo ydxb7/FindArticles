@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/searchNewsFragment"
-        android:name="ai.tomorrow.findnews.searchnews.SearchNewsFragment"
+        android:name="ai.tomorrow.findarticles.searchnews.SearchNewsFragment"
         android:label="Search Articles" >
         <action
             android:id="@+id/action_searchNewsFragment_to_articleDetailFragment"
@@ -16,11 +16,11 @@
     </fragment>
     <fragment
         android:id="@+id/articleDetailFragment"
-        android:name="ai.tomorrow.findnews.ArticleDetail.ArticleDetailFragment"
+        android:name="ai.tomorrow.findarticles.ArticleDetail.ArticleDetailFragment"
         android:label="Article"
         tools:layout="@layout/fragment_article_detail" >
         <argument
             android:name="selectedArticle"
-            app:argType="ai.tomorrow.findnews.database.entity.Article" />
+            app:argType="ai.tomorrow.findarticles.database.entity.Article" />
     </fragment>
 </navigation>

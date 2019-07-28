@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.settings;
+package ai.tomorrow.findarticles.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.databinding.FragmentSettingBinding;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.databinding.FragmentSettingBinding;
 
 public class SettingFragment extends DialogFragment {
 

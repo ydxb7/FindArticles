@@ -1,13 +1,11 @@
-package ai.tomorrow.findnews.database.dao;
+package ai.tomorrow.findarticles.database.dao;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.database.util.RealmResultsLiveData;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.database.util.RealmResultsLiveData;
 import io.realm.Realm;
 import io.realm.RealmModel;
 import io.realm.RealmQuery;

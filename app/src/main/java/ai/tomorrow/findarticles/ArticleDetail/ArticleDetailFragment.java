@@ -1,11 +1,10 @@
-package ai.tomorrow.findnews.ArticleDetail;
+package ai.tomorrow.findarticles.ArticleDetail;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -21,18 +19,13 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import org.parceler.Parcels;
-
-import ai.tomorrow.findnews.MainActivity;
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.databinding.FragmentArticleDetailBinding;
-import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.databinding.FragmentArticleDetailBinding;
 
 
 public class ArticleDetailFragment extends Fragment {

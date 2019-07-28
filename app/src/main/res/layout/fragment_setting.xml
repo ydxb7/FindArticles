@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="ai.tomorrow.findnews.settings.SettingViewModel" />
+            type="ai.tomorrow.findarticles.settings.SettingViewModel" />
     </data>
 
     <LinearLayout

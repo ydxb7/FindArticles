@@ -1,24 +1,16 @@
-package ai.tomorrow.findnews;
+package ai.tomorrow.findarticles;
 
-import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 
-import java.util.List;
-
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.searchnews.NewsGridAdapter;
-import ai.tomorrow.findnews.util.DataLoadingStatus;
+import ai.tomorrow.findarticles.util.DataLoadingStatus;
 
 public class BindingAdapters{
 

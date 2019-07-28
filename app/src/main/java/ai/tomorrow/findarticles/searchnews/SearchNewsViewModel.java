@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.searchnews;
+package ai.tomorrow.findarticles.searchnews;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -21,10 +21,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.database.dao.ArticleDao;
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.util.DataLoadingStatus;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.database.dao.ArticleDao;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.util.DataLoadingStatus;
 import cz.msebera.android.httpclient.Header;
 import io.realm.Realm;
 import io.realm.RealmList;

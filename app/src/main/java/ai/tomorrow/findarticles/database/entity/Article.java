@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.database.entity;
+package ai.tomorrow.findarticles.database.entity;
 
 import android.os.Parcelable;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
 
 import io.realm.Realm;
 import io.realm.RealmList;

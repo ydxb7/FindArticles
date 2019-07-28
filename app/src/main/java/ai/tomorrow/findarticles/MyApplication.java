@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews;
+package ai.tomorrow.findarticles;
 
 
 import android.app.Application;

@@ -1,11 +1,8 @@
-package ai.tomorrow.findnews.settings;
+package ai.tomorrow.findarticles.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,8 +17,8 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.Calendar;
 import java.util.Locale;
 
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.databinding.FragmentSettingBinding;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.databinding.FragmentSettingBinding;
 
 public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDateSetListener {
 

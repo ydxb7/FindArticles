@@ -1,8 +1,6 @@
-package ai.tomorrow.findnews.database.util;
+package ai.tomorrow.findarticles.database.util;
 
 import androidx.lifecycle.LiveData;
-
-import java.util.List;
 
 import javax.annotation.Nonnull;
 

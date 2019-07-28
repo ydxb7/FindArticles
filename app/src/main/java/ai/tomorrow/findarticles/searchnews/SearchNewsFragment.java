@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews.searchnews;
+package ai.tomorrow.findarticles.searchnews;
 
 
 import android.os.Bundle;
@@ -22,12 +22,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.settings.SettingFragment;
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.databinding.FragmentSearchNewsBinding;
-import ai.tomorrow.findnews.util.DataLoadingStatus;
-import ai.tomorrow.findnews.util.EndlessRecyclerViewScrollListener;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.settings.SettingFragment;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.databinding.FragmentSearchNewsBinding;
+import ai.tomorrow.findarticles.util.DataLoadingStatus;
+import ai.tomorrow.findarticles.util.EndlessRecyclerViewScrollListener;
 import io.realm.RealmResults;
 
 public class SearchNewsFragment extends Fragment {

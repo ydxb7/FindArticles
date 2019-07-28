@@ -1,4 +1,4 @@
-package ai.tomorrow.findnews;
+package ai.tomorrow.findarticles;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

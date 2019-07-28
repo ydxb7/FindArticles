@@ -1,27 +1,20 @@
-package ai.tomorrow.findnews.searchnews;
+package ai.tomorrow.findarticles.searchnews;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ai.tomorrow.findnews.R;
-import ai.tomorrow.findnews.database.entity.Article;
-import ai.tomorrow.findnews.databinding.GridViewItemBinding;
-import ai.tomorrow.findnews.databinding.GridViewItemNoImageBinding;
-import io.realm.RealmResults;
-import kotlin.Unit;
+import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.databinding.GridViewItemBinding;
+import ai.tomorrow.findarticles.databinding.GridViewItemNoImageBinding;
 
 public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //        RecyclerView.Adapter<NewsGridAdapter.NewsViewHolder>{
