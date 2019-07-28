@@ -37,35 +37,39 @@ public class SearchArticlesFragment extends Fragment {
     private SearchArticlesViewModel mViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ai.tomorrow.findarticles.searcharticles.NewsGridAdapter mAdapter;
+    // Adapter for GridLayout
+    private ArticlesGridAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager layoutManager;
+
     // Store a member variable for the listener
     private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
-
+        // Inflater the layout
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_news, viewGroup, false);
-//        FragmentSearchNewsBinding binding = FragmentSearchNewsBinding.inflate(getLayoutInflater(), viewGroup, false);
+
         mBinding.setLifecycleOwner(this);
-//        SearchArticlesViewModel viewModel = ViewModelProviders.of(this).get(SearchArticlesViewModel.class);
 
         SearchArticlesViewModel.Factory factory = new SearchArticlesViewModel.Factory(
                 getActivity().getApplication());
 
+        // Get the viewModel for this fragment
         mViewModel = ViewModelProviders.of(this, factory)
                 .get(SearchArticlesViewModel.class);
 
+        // Set the viewModel in the xml
         mBinding.setSearchViewModel(mViewModel);
 
         mRecyclerView = (RecyclerView) mBinding.newsGrid;
 
-        mRecyclerView.setHasFixedSize(true);
-
+        // Get the swipeRefreshLayout
         mSwipeRefreshLayout = mBinding.swipeLayout;
 
-        mAdapter = new ai.tomorrow.findarticles.searcharticles.NewsGridAdapter(new ai.tomorrow.findarticles.searcharticles.NewsGridAdapter.ItemClickListener() {
+        // Initialize the adapter, and set the click listener. When clicked on the item, change the
+        // navigateToSelectedArticle value in the viewModel and navigate to the detailFragment
+        mAdapter = new ArticlesGridAdapter(new ArticlesGridAdapter.ItemClickListener() {
             @Override
             public void onListItemClick(Article article) {
                 mViewModel.displayArticleDetails(article);
@@ -73,18 +77,18 @@ public class SearchArticlesFragment extends Fragment {
         });
         mRecyclerView.setAdapter(mAdapter);
 
+        // Set the StaggeredGridLayoutManager
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        // Set the EndlessRecyclerViewScrollListener to load the data endlessly
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                Log.d(TAG, "viewModel.getArticles().getValue().size() = " + mViewModel.getArticles().getValue().size());
                 Log.d(TAG, "page = " + page);
                 mViewModel.fetchArticle(page);
-                Log.d(TAG, "viewModel.getArticles().getValue().size() = " + mViewModel.getArticles().getValue().size());
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -97,54 +101,61 @@ public class SearchArticlesFragment extends Fragment {
             }
         });
 
+        // When the first page of the web query is loaded, then change the loading indicator status.
         mViewModel.getIsFinishLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isFinishLoading) {
                 if (isFinishLoading){
                     if (null == mViewModel.getArticles().getValue() || mViewModel.getArticles().getValue().isEmpty()){
+                        // If the data is finish loading and it's empty, loading status to EMPTY
                         mViewModel.mStatus.setValue(DataLoadingStatus.EMPTY);
                     } else {
+                        // If the data is finish loading, set the loading status to DONE
                         mViewModel.mStatus.setValue(DataLoadingStatus.DONE);
                     }
+                    // Close the swipeRefresh loading indicator
                     mSwipeRefreshLayout.setRefreshing(false);
-                    Log.d(TAG, "mSwipeRefreshLayout.setRefreshing(false);");
                 }
             }
         });
 
+        // Navigate to DetailFragment and pass the article
         mViewModel.getNavigateToSelectedArticle().observe(this, new Observer<Article>() {
             @Override
             public void onChanged(Article article) {
                 if (null != article){
                     Navigation.findNavController(getView()).navigate(SearchArticlesFragmentDirections
                             .actionSearchArticlesFragmentToArticleDetailFragment(article));
+                    // Navigate to detail fragment complete
                     mViewModel.displayArticleDetailsComplete();
                 }
             }
         });
 
-        // set SwipeRefreshLayout
-        // 设置转动颜色变化
+        // SwipeRefreshLayout: set the color for the loading indicator for the SwipeRefreshLayout
         mSwipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_dark,
                 android.R.color.holo_blue_light,
                 android.R.color.holo_green_light,
                 android.R.color.holo_green_light);
 
-        // 刷新监听
+        // when the refresh setOnRefreshListener 刷新监听
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
-                // 开始转动
+                // loading indicator start to rotate
                 mSwipeRefreshLayout.setRefreshing(true);
 
+                // Refresh the search result
                 mViewModel.swipRefresh();
+                // Reset the EndlessRecyclerViewScroll
                 scrollListener.resetState();
             }
         });
 
+        // Set the option menu
         setHasOptionsMenu(true);
-        return mBinding.getRoot();
 
+        return mBinding.getRoot();
     }
 
     @Override
@@ -152,11 +163,12 @@ public class SearchArticlesFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_articles_menu, menu);
 
+        // Set the SearchView in the menu bar.
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
-
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
+        // Set the setOnQueryTextListener for SearchView
         searchView.setOnQueryTextListener(mViewModel.onQueryTextListener);
     }
 
@@ -164,16 +176,16 @@ public class SearchArticlesFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings){
-//            Navigation.findNavController(getView()).navigate(R.id.action_searchNewsFragment_to_settingFragment);
+            // Open the setting fragment to change the preference
             SettingFragment settingFragment = new SettingFragment();
             settingFragment.show(getFragmentManager(), SettingFragment.class.getSimpleName());
+            // When back from the setting fragment, search the result and refresh the recyclerView
             settingFragment.setCallback(() -> {
                 if (mViewModel.isSearchChanged()){
                     mViewModel.updateSearch();
                     scrollListener.resetState();
                 }
             });
-
         }
 
         return super.onOptionsItemSelected(item);

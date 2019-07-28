@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ai.tomorrow.findarticles.R;
@@ -16,17 +15,19 @@ import ai.tomorrow.findarticles.database.entity.Article;
 import ai.tomorrow.findarticles.databinding.GridViewItemBinding;
 import ai.tomorrow.findarticles.databinding.GridViewItemNoImageBinding;
 
-public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-//        RecyclerView.Adapter<NewsGridAdapter.NewsViewHolder>{
+public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+//        RecyclerView.Adapter<ArticlesGridAdapter.ArticlesViewHolder>{
 
-    private static final String TAG = NewsGridAdapter.class.getSimpleName();
+    private static final String TAG = ArticlesGridAdapter.class.getSimpleName();
+
+    // Define 2 View types for the view with image and without image
     private static final int VIEW_TYPE_WITH_IMAGE = 0;
     private static final int VIEW_TYPE_NO_IMAGE = 1;
 
     private List<? extends Article> articles;
-    private List<? extends Article> articlesFull;
 
-////    // TODO (3) Create a final private ListItemClickListener called mOnClickListener
+    // Create a final private ListItemClickListener called mOnClickListener, which will be initialized
+    // from the Fragment where adapter is created.
     private final ItemClickListener mOnClickListener;
 
 //    private static DiffUtil.ItemCallback<Article> diffCallback = new DiffUtil.ItemCallback<Article>() {
@@ -42,44 +43,36 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        }
 //    };
 
-    // TODO (1) Add an interface called ListItemClickListener
-    // TODO (2) Within that interface, define a void method called onListItemClick that takes an int as a parameter
+    // Add an interface called ListItemClickListener
+    // Within that interface, define a void method called onListItemClick that takes an int as a parameter
     public interface ItemClickListener{
         void onListItemClick(Article article);
     }
 
 
-    public NewsGridAdapter(ItemClickListener listener){
+    public ArticlesGridAdapter(ItemClickListener listener){
         mOnClickListener = listener;
 //        super(diffCallback);
     }
 
     public void setArticles(List<Article> articles){
+        // When the search articles updated, we update the whole dataset
         if (this.articles == null){
             this.articles = articles;
-            this.articlesFull = new ArrayList<>(articles);
             notifyDataSetChanged();
         } else if (articles.size() == 0){
+            // clear the database
             notifyDataSetChanged();
         } else {
+            // Only new articles are inserted into the articles, so only notifyItemInserted from the oldSize
             int oldSize = this.articles.size();
             this.articles = articles;
-            this.articlesFull = new ArrayList<>(articles);
             notifyItemInserted(oldSize);
         }
 
     }
 
-    /**
-     * Returns an integer code related to the type of View we want the ViewHolder to be at a given
-     * position. This method is useful when we want to use different layouts for different items
-     * depending on their position. In Sunshine, we take advantage of this method to provide a
-     * different layout for the "today" layout. The "today" layout is only shown in portrait mode
-     * with the first item in the list.
-     *
-     * @param position index within our RecyclerView and Cursor
-     * @return the view type (today or future day)
-     */
+    // Get the view type for the Article according to whether there is image in Article
     @Override
     public int getItemViewType(int position) {
         Article article = this.articles.get(position);
@@ -99,12 +92,13 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
+        // Inflater different layout from its view type
         switch (viewType){
             case VIEW_TYPE_WITH_IMAGE:
-                return new NewsViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+                return new ArticlesViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                         R.layout.grid_view_item, viewGroup, false));
             case VIEW_TYPE_NO_IMAGE:
-                return new NewsViewHolderNoImage(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
+                return new ArticlesViewHolderNoImage(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                         R.layout.grid_view_item_no_image, viewGroup, false));
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
@@ -124,26 +118,25 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         });
         switch (viewType){
             case VIEW_TYPE_WITH_IMAGE:
-                ((NewsViewHolder)holder).bind(article);
+                ((ArticlesViewHolder)holder).bind(article);
                 break;
             case VIEW_TYPE_NO_IMAGE:
-                ((NewsViewHolderNoImage)holder).bind(article);
+                ((ArticlesViewHolderNoImage)holder).bind(article);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
         }
     }
 
-
-    class NewsViewHolder extends RecyclerView.ViewHolder {
+    // ViewHolder with image
+    class ArticlesViewHolder extends RecyclerView.ViewHolder {
 
         GridViewItemBinding mBinding;
 
-        public NewsViewHolder(GridViewItemBinding binding){
+        public ArticlesViewHolder(GridViewItemBinding binding){
             super(binding.getRoot());
 
             mBinding = binding;
-
         }
 
         void bind(Article article) {
@@ -155,15 +148,15 @@ public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    class NewsViewHolderNoImage extends RecyclerView.ViewHolder{
+    // ViewHolder without image
+    class ArticlesViewHolderNoImage extends RecyclerView.ViewHolder{
 
         GridViewItemNoImageBinding mBinding;
 
-        public NewsViewHolderNoImage(GridViewItemNoImageBinding binding){
+        public ArticlesViewHolderNoImage(GridViewItemNoImageBinding binding){
             super(binding.getRoot());
 
             mBinding = binding;
-
         }
 
         void bind(Article article) {

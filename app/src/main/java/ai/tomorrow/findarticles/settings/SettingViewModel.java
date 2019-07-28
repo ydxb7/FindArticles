@@ -30,12 +30,14 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
     private Context mContext;
     private DatePickerDialog dpd;
 
+    // Preference key
     private String PREF_ARTS_KEY;
     private String PREF_FASHION_KEY;
     private String PREF_SPORTS_KEY;
     private String PREF_SORT_KEY;
     private String PREF_BEGIN_DATE_KEY;
 
+    // Preference default value
     private Boolean PREF_ARTS_DEFAULT;
     private Boolean PREF_FASHION_DEFAULT;
     private Boolean PREF_SPORTS_DEFAULT;
@@ -56,6 +58,8 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
     public SettingViewModel(Context context, FragmentSettingBinding binding) {
 
         mContext = context;
+
+        // Get preference values
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         PREF_ARTS_DEFAULT = mContext.getResources().getBoolean(R.bool.pref_arts_default);
@@ -70,16 +74,6 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         PREF_SORT_KEY = mContext.getResources().getString(R.string.pref_sort_key);
         PREF_BEGIN_DATE_KEY = mContext.getResources().getString(R.string.pref_begin_date_key);
 
-        Boolean myArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
-        Boolean myFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);
-        Boolean mySports = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
-        int myBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
-
-//        Log.d(TAG, "myArts = " + myArts);
-//        Log.d(TAG, "myFashion = " + myFashion);
-//        Log.d(TAG, "mySports = " + mySports);
-//        Log.d(TAG, "myBgindate = " + myBgindate);
-
         mBinding = binding;
 
         mEditor = mPreferences.edit();
@@ -87,6 +81,7 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         setViewStatus();
     }
 
+    // Set the View status according to the preference
     private void setViewStatus() {
         mBinding.prefArtsCheckBox.setChecked(mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT));
         mBinding.prefFashionCheckBox.setChecked(mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT));
@@ -110,6 +105,7 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
 
     }
 
+    // When the saved button is clicked, we save the preference
     public void onClickSavedButton() {
         mEditor.putBoolean(PREF_ARTS_KEY, mBinding.prefArtsCheckBox.isChecked());
         mEditor.putBoolean(PREF_FASHION_KEY, mBinding.prefFashionCheckBox.isChecked());
@@ -122,11 +118,13 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         navigateBack.setValue(true);
     }
 
+    // Clean the date picked from the DatePicker
     public void onClickCleanButton(){
         mEditor.putInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
         mBinding.dateEditText.setText("");
     }
 
+    // Show DatePickerDialog, and pick the date, the date picked will be saved use a 8-digit int
     public void showDatePickerDialog() {
         Calendar now = Calendar.getInstance();
             /*
@@ -150,7 +148,6 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
             );
         }
         dpd.setTitle("Date Picker");
-//        dpd.setAccentColor(Color.parseColor("#9C27B0"));
         dpd.setOnCancelListener(dialog -> {
             Log.d("DatePickerDialog", "Dialog was cancelled");
             dpd = null;
@@ -158,12 +155,14 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
         dpd.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "Datepickerdialog");
     }
 
+    // Called when the date is saved
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = String.format(Locale.US,"%02d/%02d/%04d", ++monthOfYear, dayOfMonth, year);
-        Log.d(TAG, "date = " + date);
+        // Set the Edit text value
         mBinding.dateEditText.setText(date);
         dpd = null;
+        // the date is saved as a 8-digit int
         mBginDate = year * 10000 + monthOfYear * 100 + dayOfMonth;
     }
 
