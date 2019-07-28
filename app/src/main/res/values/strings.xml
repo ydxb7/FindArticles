@@ -19,7 +19,7 @@
     <string name="pref_begin_date_key">pref_begin_date_key</string>
 
     <string name="selected_date">The date you picked will be shown here.</string>
-    <string name="pick_date">Pick Date</string>
+    <string name="pick_date"> \u0020\u0020 Pick Date \u0020\u0020 </string>
     <string name="begin_date">Begin date:</string>
     <string name="clean">clean</string>
     <string name="no_results">No results</string>

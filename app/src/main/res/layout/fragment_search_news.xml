@@ -34,6 +34,7 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <!--Loading indicator-->
         <ImageView
             android:id="@+id/status_image"
             android:layout_width="150dp"
@@ -44,6 +45,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:dataLoadStatus="@{searchViewModel.mStatus}" />
 
+        <!--Text view for empty result-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

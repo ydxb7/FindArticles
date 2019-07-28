@@ -13,23 +13,25 @@
     </data>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="@dimen/space_medium_large">
 
-        <!-- DatePicker Options -->
+        <!--Begin date text view-->
         <TextView
             android:id="@+id/date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/begin_date" />
 
+        <!--Date picker -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- DatePicker Options -->
             <EditText
                 android:id="@+id/date_edit_text"
                 android:layout_width="match_parent"
@@ -38,48 +40,59 @@
                 android:editable="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
+                tools:text="07/11/2019"
                 android:hint="@string/pick_date"
                 android:onClick="@{() -> viewModel.showDatePickerDialog()}" />
 
+            <!--Clean DatePicker-->
             <Button
                 android:id="@+id/clean_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_large"
                 android:text="@string/clean"
                 android:onClick="@{() -> viewModel.onClickCleanButton()}"/>
 
         </LinearLayout>
 
+        <!--Sort type-->
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/pref_sort_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/sort_array" />
 
+        <!--Article type: Arts-->
         <CheckBox
             android:id="@+id/pref_arts_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/space_medium"
             android:text="@string/news_desk_values_arts" />
 
+        <!--Article type: Fashion & Style-->
         <CheckBox
             android:id="@+id/pref_fashion_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/space_medium"
             android:text="@string/news_desk_values_fashion" />
 
+        <!--Article type: Sports-->
         <CheckBox
             android:id="@+id/pref_sports_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/space_medium"
             android:text="@string/news_desk_values_sports" />
 
-
+        <!--Save preference-->
         <Button
             android:id="@+id/settings_fragment_save_button_id"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="@dimen/space_medium"
+            android:layout_gravity="center_horizontal"
             android:onClick="@{() -> viewModel.onClickSavedButton()}"
             android:text="@string/save" />
 
