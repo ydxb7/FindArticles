@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchNewsFragment">
+    app:startDestination="@id/searchArticlesFragment">
 
     <fragment
-        android:id="@+id/searchNewsFragment"
-        android:name="ai.tomorrow.findarticles.searchnews.SearchNewsFragment"
+        android:id="@+id/searchArticlesFragment"
+        android:name="ai.tomorrow.findarticles.searcharticles.SearchArticlesFragment"
         android:label="Search Articles" >
         <action
-            android:id="@+id/action_searchNewsFragment_to_articleDetailFragment"
-            app:destination="@id/articleDetailFragment"
-            app:popUpTo="@+id/searchNewsFragment" />
+            android:id="@+id/action_searchArticlesFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/articleDetailFragment"

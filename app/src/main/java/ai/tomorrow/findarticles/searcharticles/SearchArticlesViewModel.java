@@ -1,4 +1,4 @@
-package ai.tomorrow.findarticles.searchnews;
+package ai.tomorrow.findarticles.searcharticles;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -30,9 +30,9 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
-public class SearchNewsViewModel extends AndroidViewModel {
+public class SearchArticlesViewModel extends AndroidViewModel {
 
-    private static String TAG = SearchNewsViewModel.class.getSimpleName();
+    private static String TAG = SearchArticlesViewModel.class.getSimpleName();
 
     private String PREF_ARTS_KEY;
     private String PREF_FASHION_KEY;
@@ -84,7 +84,7 @@ public class SearchNewsViewModel extends AndroidViewModel {
     }
 
 
-    public SearchNewsViewModel(@NonNull Application application) {
+    public SearchArticlesViewModel(@NonNull Application application) {
         super(application);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(application);
@@ -273,7 +273,7 @@ public class SearchNewsViewModel extends AndroidViewModel {
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new SearchNewsViewModel(mApplication);
+            return (T) new SearchArticlesViewModel(mApplication);
         }
     }
 }

@@ -1,4 +1,4 @@
-package ai.tomorrow.findarticles.searchnews;
+package ai.tomorrow.findarticles.searcharticles;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +15,6 @@ import ai.tomorrow.findarticles.R;
 import ai.tomorrow.findarticles.database.entity.Article;
 import ai.tomorrow.findarticles.databinding.GridViewItemBinding;
 import ai.tomorrow.findarticles.databinding.GridViewItemNoImageBinding;
-import io.realm.RealmResults;
-import kotlin.Unit;
 
 public class NewsGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //        RecyclerView.Adapter<NewsGridAdapter.NewsViewHolder>{

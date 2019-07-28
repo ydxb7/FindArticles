@@ -10,10 +10,6 @@ import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.List;
-
-import ai.tomorrow.findarticles.database.entity.Article;
-import ai.tomorrow.findarticles.searchnews.NewsGridAdapter;
 import ai.tomorrow.findarticles.util.DataLoadingStatus;
 
 public class BindingAdapters{

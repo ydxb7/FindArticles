@@ -1,4 +1,4 @@
-package ai.tomorrow.findarticles.searchnews;
+package ai.tomorrow.findarticles.searcharticles;
 
 
 import android.os.Bundle;
@@ -28,24 +28,16 @@ import ai.tomorrow.findarticles.database.entity.Article;
 import ai.tomorrow.findarticles.databinding.FragmentSearchNewsBinding;
 import ai.tomorrow.findarticles.util.DataLoadingStatus;
 import ai.tomorrow.findarticles.util.EndlessRecyclerViewScrollListener;
-import ai.tomorrow.findarticles.R;
-import ai.tomorrow.findarticles.databinding.FragmentSearchNewsBinding;
-import ai.tomorrow.findarticles.searchnews.SearchNewsFragmentDirections;
-import ai.tomorrow.findarticles.searchnews.SearchNewsViewModel;
-import ai.tomorrow.findarticles.settings.SettingFragment;
-import ai.tomorrow.findarticles.database.entity.Article;
-import ai.tomorrow.findarticles.util.DataLoadingStatus;
-import ai.tomorrow.findarticles.util.EndlessRecyclerViewScrollListener;
 import io.realm.RealmResults;
 
-public class SearchNewsFragment extends Fragment {
+public class SearchArticlesFragment extends Fragment {
 
-    private String TAG = SearchNewsFragment.class.getSimpleName();
+    private String TAG = SearchArticlesFragment.class.getSimpleName();
     private FragmentSearchNewsBinding mBinding;
-    private SearchNewsViewModel mViewModel;
+    private SearchArticlesViewModel mViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private ai.tomorrow.findarticles.searchnews.NewsGridAdapter mAdapter;
+    private ai.tomorrow.findarticles.searcharticles.NewsGridAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager layoutManager;
     // Store a member variable for the listener
@@ -57,13 +49,13 @@ public class SearchNewsFragment extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_news, viewGroup, false);
 //        FragmentSearchNewsBinding binding = FragmentSearchNewsBinding.inflate(getLayoutInflater(), viewGroup, false);
         mBinding.setLifecycleOwner(this);
-//        SearchNewsViewModel viewModel = ViewModelProviders.of(this).get(SearchNewsViewModel.class);
+//        SearchArticlesViewModel viewModel = ViewModelProviders.of(this).get(SearchArticlesViewModel.class);
 
-        SearchNewsViewModel.Factory factory = new SearchNewsViewModel.Factory(
+        SearchArticlesViewModel.Factory factory = new SearchArticlesViewModel.Factory(
                 getActivity().getApplication());
 
         mViewModel = ViewModelProviders.of(this, factory)
-                .get(SearchNewsViewModel.class);
+                .get(SearchArticlesViewModel.class);
 
         mBinding.setSearchViewModel(mViewModel);
 
@@ -73,7 +65,7 @@ public class SearchNewsFragment extends Fragment {
 
         mSwipeRefreshLayout = mBinding.swipeLayout;
 
-        mAdapter = new ai.tomorrow.findarticles.searchnews.NewsGridAdapter(new ai.tomorrow.findarticles.searchnews.NewsGridAdapter.ItemClickListener() {
+        mAdapter = new ai.tomorrow.findarticles.searcharticles.NewsGridAdapter(new ai.tomorrow.findarticles.searcharticles.NewsGridAdapter.ItemClickListener() {
             @Override
             public void onListItemClick(Article article) {
                 mViewModel.displayArticleDetails(article);
@@ -124,8 +116,8 @@ public class SearchNewsFragment extends Fragment {
             @Override
             public void onChanged(Article article) {
                 if (null != article){
-                    Navigation.findNavController(getView()).navigate(SearchNewsFragmentDirections
-                            .actionSearchNewsFragmentToArticleDetailFragment(article));
+                    Navigation.findNavController(getView()).navigate(SearchArticlesFragmentDirections
+                            .actionSearchArticlesFragmentToArticleDetailFragment(article));
                     mViewModel.displayArticleDetailsComplete();
                 }
             }

@@ -23,10 +23,6 @@ import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import org.parceler.Parcels;
-
-import ai.tomorrow.findarticles.ArticleDetail.ArticleDetailFragmentArgs;
-import ai.tomorrow.findarticles.MainActivity;
 import ai.tomorrow.findarticles.R;
 import ai.tomorrow.findarticles.database.entity.Article;
 import ai.tomorrow.findarticles.databinding.FragmentArticleDetailBinding;
@@ -35,7 +31,9 @@ import ai.tomorrow.findarticles.databinding.FragmentArticleDetailBinding;
 public class ArticleDetailFragment extends Fragment {
 
     private String TAG = ArticleDetailFragment.class.getSimpleName();
+    // data-binding
     private FragmentArticleDetailBinding mBinding;
+    // The article passed from
     private Article mArticle;
     private WebView myWebView;
 

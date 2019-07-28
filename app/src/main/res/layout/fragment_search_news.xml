@@ -8,7 +8,7 @@
         <import type="android.view.View"/>
         <variable
             name="searchViewModel"
-            type="ai.tomorrow.findarticles.searchnews.SearchNewsViewModel" />
+            type="ai.tomorrow.findarticles.searcharticles.SearchArticlesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
