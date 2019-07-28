@@ -20,6 +20,7 @@ public class ArticleDao<T extends RealmModel> {
         this.db = db;
     }
 
+    // Get the LiveData RealmResults, get all the data in the database
     public LiveData<RealmResults<Article>> findAll(){
         return new RealmResultsLiveData<>(where().findAll());
     }
@@ -28,6 +29,7 @@ public class ArticleDao<T extends RealmModel> {
         return db.where(Article.class);
     }
 
+    // Delete all the data in the database
     public void deleteAll() {
         db.executeTransactionAsync(new Realm.Transaction() {
             @Override

@@ -33,20 +33,27 @@ public class ArticleDetailFragment extends Fragment {
     private String TAG = ArticleDetailFragment.class.getSimpleName();
     // data-binding
     private FragmentArticleDetailBinding mBinding;
-    // The article passed from
+    // The article passed from SearchArticlesFragment
     private Article mArticle;
+    // The webView shown in detail fragment
     private WebView myWebView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflater the layout
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail, container, false);
+
+        // Get the article from the SearchArticlesFragment
         mArticle = ArticleDetailFragmentArgs.fromBundle(getArguments()).getSelectedArticle();
 
+        // Get the webView
         myWebView = mBinding.webview;
 
+        // Set the webView to show the webpage
         setWebView();
 
+        // set the option menu
         setHasOptionsMenu(true);
 
         return mBinding.getRoot();
@@ -62,6 +69,7 @@ public class ArticleDetailFragment extends Fragment {
         // Load the page
         myWebView.loadUrl(mArticle.getWebUrl());
 
+        // Set the back button to back up to the history page
         myWebView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -114,6 +122,7 @@ public class ArticleDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        // Share intent to share the url
         if (id == R.id.action_share){
             String textToShare = mArticle.getWebUrl();
             prepareShareIntent(textToShare);

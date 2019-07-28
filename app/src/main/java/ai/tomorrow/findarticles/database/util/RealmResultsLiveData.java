@@ -17,6 +17,7 @@ public class RealmResultsLiveData<T extends RealmModel> extends LiveData<RealmRe
     public RealmResultsLiveData(RealmResults<T> results) {
         this.results = results;
 
+        // When the RealmResults change, the LiveData changes
         listener = new RealmChangeListener<RealmResults<T>>() {
             @Override
             public void onChange(@Nonnull RealmResults<T> updates) {
@@ -26,12 +27,14 @@ public class RealmResultsLiveData<T extends RealmModel> extends LiveData<RealmRe
 
     }
 
+    // Add the realm database change Listener
     @Override
     protected void onActive() {
         super.onActive();
         results.addChangeListener(listener);
     }
 
+    // Remove the realm database change listener
     @Override
     protected void onInactive() {
         super.onInactive();
