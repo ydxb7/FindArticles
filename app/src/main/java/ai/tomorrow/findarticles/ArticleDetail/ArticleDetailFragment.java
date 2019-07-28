@@ -23,6 +23,10 @@ import androidx.core.app.ShareCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import org.parceler.Parcels;
+
+import ai.tomorrow.findarticles.ArticleDetail.ArticleDetailFragmentArgs;
+import ai.tomorrow.findarticles.MainActivity;
 import ai.tomorrow.findarticles.R;
 import ai.tomorrow.findarticles.database.entity.Article;
 import ai.tomorrow.findarticles.databinding.FragmentArticleDetailBinding;

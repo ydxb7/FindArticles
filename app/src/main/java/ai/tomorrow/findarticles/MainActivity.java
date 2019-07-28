@@ -8,6 +8,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import ai.tomorrow.findarticles.ArticleDetail.ArticleDetailFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = MainActivity.class.getSimpleName();
