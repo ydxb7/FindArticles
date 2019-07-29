@@ -11,6 +11,7 @@ I use **Java** to compelete this Application. The following **required** functio
 * [X] User can **scroll through all the articles** find from the New York Times Database API
 * [X] User can **Endlessly get the data in the server** to find their interested articles.
 * [X] User can According to the their interesting topic to show the articles and store these information **use preference** .
+* [X] Even though there is no network available, the user can also see the same articles list as they loaded last time.
 * [X] Use the **DatePicker** to pick the begin date of the articles list.
 * [X] User can use **SearchView** to find their interested articles by using keywords.
 * [X] For each article displayed, user can see the details of the articles.

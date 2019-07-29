@@ -292,7 +292,9 @@ public class SearchArticlesViewModel extends ViewModel {
 
     // Refresh the data by swipeRefreshLayout
     public void swipRefresh(){
+        // there is no data to show
         isFinishLoading.setValue(false);
+        // delete all data in the database
         mRealm.executeTransaction(realm -> realm.deleteAll());
         // remove all the articles in the adapter
         articles.clear();
