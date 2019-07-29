@@ -23,16 +23,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import ai.tomorrow.findarticles.R;
+import ai.tomorrow.findarticles.databinding.FragmentSearchArticalsBinding;
 import ai.tomorrow.findarticles.settings.SettingFragment;
 import ai.tomorrow.findarticles.models.Article;
-import ai.tomorrow.findarticles.databinding.FragmentSearchNewsBinding;
 import ai.tomorrow.findarticles.util.DataLoadingStatus;
 import ai.tomorrow.findarticles.util.EndlessRecyclerViewScrollListener;
 
 public class SearchArticlesFragment extends Fragment {
 
     private String TAG = SearchArticlesFragment.class.getSimpleName();
-    private FragmentSearchNewsBinding mBinding;
+    private FragmentSearchArticalsBinding mBinding;
     private SearchArticlesViewModel mViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -45,7 +45,7 @@ public class SearchArticlesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         // Inflater the layout
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_news, viewGroup, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_articals, viewGroup, false);
 
         mBinding.setLifecycleOwner(this);
 
