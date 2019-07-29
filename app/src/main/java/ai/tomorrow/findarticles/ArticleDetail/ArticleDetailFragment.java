@@ -24,7 +24,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import ai.tomorrow.findarticles.R;
-import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.models.Article;
 import ai.tomorrow.findarticles.databinding.FragmentArticleDetailBinding;
 
 

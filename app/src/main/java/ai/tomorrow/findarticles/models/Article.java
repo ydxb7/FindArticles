@@ -1,4 +1,4 @@
-package ai.tomorrow.findarticles.database.entity;
+package ai.tomorrow.findarticles.models;
 
 import android.os.Parcelable;
 import android.util.Log;
@@ -104,7 +104,7 @@ public class Article extends RealmObject implements Parcelable {
     }
 
     // Parse the ArticleList from the JsonArray
-    public static RealmList<Article> parseJsonIntoArticleList(JSONArray articleJsonResults, Realm realm){
+    public static RealmList<Article> parseJsonIntoArticleList(JSONArray articleJsonResults){
         RealmList<Article> articleRealmList = new RealmList<>();
         for (int i = 0; i < articleJsonResults.length(); i++){
             try {
@@ -131,4 +131,11 @@ public class Article extends RealmObject implements Parcelable {
         dest.writeString(thumbnail);
         dest.writeString(snippet);
     }
+
+//    public static RealmResults<Article> getAllArticles(){
+//        Realm realm = Realm.getDefaultInstance();
+//        RealmResults<Article> articles =  realm.where(Article.class).findAll();
+//        realm.close();
+//        return articles;
+//    }
 }

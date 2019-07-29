@@ -7,7 +7,7 @@
     <data>
         <variable
             name="article"
-            type="ai.tomorrow.findarticles.database.entity.Article" />
+            type="ai.tomorrow.findarticles.models.Article" />
     </data>
 
     <androidx.cardview.widget.CardView

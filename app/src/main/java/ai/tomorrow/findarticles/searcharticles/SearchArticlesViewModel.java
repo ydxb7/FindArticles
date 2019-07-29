@@ -1,12 +1,13 @@
 package ai.tomorrow.findarticles.searcharticles;
 
-import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -21,16 +22,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ai.tomorrow.findarticles.R;
-import ai.tomorrow.findarticles.database.dao.ArticleDao;
-import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.models.Article;
 import ai.tomorrow.findarticles.util.DataLoadingStatus;
 import cz.msebera.android.httpclient.Header;
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmResults;
 
-public class SearchArticlesViewModel extends AndroidViewModel {
+public class SearchArticlesViewModel extends ViewModel {
 
     private static String TAG = SearchArticlesViewModel.class.getSimpleName();
 
@@ -64,14 +66,14 @@ public class SearchArticlesViewModel extends AndroidViewModel {
     private int mBgindate;
     private String mQuery = "";
 
-    // The database
-    private Realm realm;
-    private ArticleDao dao;
+    private Context mContext;
+
+    private Realm mRealm = Realm.getDefaultInstance();
 
     // LiveData realm results
-    private LiveData<RealmResults<Article>> articles;
+    private ArrayList<Article> articles= new ArrayList<>();
 
-    public LiveData<RealmResults<Article>> getArticles() {
+    public List<Article> getArticles() {
         return articles;
     }
 
@@ -92,29 +94,38 @@ public class SearchArticlesViewModel extends AndroidViewModel {
         return isFinishLoading;
     }
 
+    // Initialize the adapter, and set the click listener. When clicked on the item, change the
+    // navigateToSelectedArticle value in the viewModel and navigate to the detailFragment
+    public ArticlesGridAdapter mAdapter = new ArticlesGridAdapter(new ArticlesGridAdapter.ItemClickListener() {
+        @Override
+        public void onListItemClick(Article article) {
+            displayArticleDetails(article);
+        }
+    });
 
-    public SearchArticlesViewModel(@NonNull Application application) {
-        super(application);
+    public SearchArticlesViewModel(@NonNull Context context) {
+
+        mContext = context;
 
         // Get the preference values
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(application);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-        PREF_ARTS_DEFAULT = application.getResources().getBoolean(R.bool.pref_arts_default);
-        PREF_FASHION_DEFAULT = application.getResources().getBoolean(R.bool.pref_fashion_default);
-        PREF_SPORTS_DEFAULT = application.getResources().getBoolean(R.bool.pref_sports_default);
-        PREF_SORT_DEFAULT = application.getResources().getString(R.string.pref_sort_newest);
-        PREF_BEGIN_DATE_DEFAULT = application.getResources().getInteger(R.integer.pref_begin_date_default);
+        PREF_ARTS_DEFAULT = mContext.getResources().getBoolean(R.bool.pref_arts_default);
+        PREF_FASHION_DEFAULT = mContext.getResources().getBoolean(R.bool.pref_fashion_default);
+        PREF_SPORTS_DEFAULT = mContext.getResources().getBoolean(R.bool.pref_sports_default);
+        PREF_SORT_DEFAULT = mContext.getResources().getString(R.string.pref_sort_newest);
+        PREF_BEGIN_DATE_DEFAULT = mContext.getResources().getInteger(R.integer.pref_begin_date_default);
 
-        PREF_ARTS_KEY = application.getResources().getString(R.string.pref_arts_key);
-        PREF_FASHION_KEY = application.getResources().getString(R.string.pref_fashion_key);
-        PREF_SPORTS_KEY = application.getResources().getString(R.string.pref_sports_key);
-        PREF_SORT_KEY = application.getResources().getString(R.string.pref_sort_key);
-        PREF_BEGIN_DATE_KEY = application.getResources().getString(R.string.pref_begin_date_key);
+        PREF_ARTS_KEY = mContext.getResources().getString(R.string.pref_arts_key);
+        PREF_FASHION_KEY = mContext.getResources().getString(R.string.pref_fashion_key);
+        PREF_SPORTS_KEY = mContext.getResources().getString(R.string.pref_sports_key);
+        PREF_SORT_KEY = mContext.getResources().getString(R.string.pref_sort_key);
+        PREF_BEGIN_DATE_KEY = mContext.getResources().getString(R.string.pref_begin_date_key);
 
-        PREF_SORT_VALUE_NEWEST = application.getResources().getString(R.string.pref_sort_newest);
-        PREF_SORT_VALUE_OLDEST = application.getResources().getString(R.string.pref_sort_oldest);
-        PREF_SORT_VALUE_ASCENDING = application.getResources().getString(R.string.pref_sort_ascending);
-        PREF_SORT_VALUE_DESCENDING = application.getResources().getString(R.string.pref_sort_descending);
+        PREF_SORT_VALUE_NEWEST = mContext.getResources().getString(R.string.pref_sort_newest);
+        PREF_SORT_VALUE_OLDEST = mContext.getResources().getString(R.string.pref_sort_oldest);
+        PREF_SORT_VALUE_ASCENDING = mContext.getResources().getString(R.string.pref_sort_ascending);
+        PREF_SORT_VALUE_DESCENDING = mContext.getResources().getString(R.string.pref_sort_descending);
 
         mArts = mPreferences.getBoolean(PREF_ARTS_KEY, PREF_ARTS_DEFAULT);
         mFashion = mPreferences.getBoolean(PREF_FASHION_KEY, PREF_FASHION_DEFAULT);
@@ -122,17 +133,21 @@ public class SearchArticlesViewModel extends AndroidViewModel {
         mSort = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
         mBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
 
-        // Set the DataLoadingStatus to LOADING
-        mStatus.setValue(DataLoadingStatus.LOADING);
-        isFinishLoading.setValue(false);
-        Realm.deleteRealm(Realm.getDefaultConfiguration());
-        realm = Realm.getDefaultInstance();
-        dao = new ArticleDao(realm);
-
-        // articles are got from database
-        articles = dao.findAll();
-        // fetch the data online and insert into the database
-        fetchArticle(0);
+        if (!isConnected()){
+            // articles are got from database
+            mStatus.setValue(DataLoadingStatus.LOADING);
+            articles.addAll(mRealm.where(Article.class).findAll());
+            mAdapter.setArticles(articles);
+            mStatus.setValue(DataLoadingStatus.DONE);
+        } else {
+            // Set the DataLoadingStatus to LOADING
+            mStatus.setValue(DataLoadingStatus.LOADING);
+            isFinishLoading.setValue(false);
+            // remove data in the database
+            mRealm.executeTransaction(realm -> realm.deleteAll());
+            // fetch the data online and insert into the database
+            fetchArticle(0);
+        }
     }
 
 
@@ -195,22 +210,25 @@ public class SearchArticlesViewModel extends AndroidViewModel {
                 try {
                     // Parse the Json data from the web to ArticleList
                     JSONArray articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
-                    RealmList<Article> articleRealmList = Article.parseJsonIntoArticleList(articleJsonResults, realm);
+                    RealmList<Article> articleRealmList = Article.parseJsonIntoArticleList(articleJsonResults);
+                    articles.addAll(articleRealmList);
+                    mAdapter.setArticles(articles);
+
+                    mRealm.executeTransaction(realm -> realm.copyToRealmOrUpdate(articleRealmList));
 
                     // Insert the Article List into the database
                     try {
                         // Open a transaction to store items into the realm
-                        realm.beginTransaction();
-                        realm.copyToRealmOrUpdate(articleRealmList);
-                        realm.commitTransaction();
+                        mRealm.beginTransaction();
+                        mRealm.copyToRealmOrUpdate(articleRealmList);
                         isFinishLoading.setValue(true);
+                        mRealm.commitTransaction();
                     } catch (Exception e) {
-                        if (realm.isInTransaction()) {
-                            realm.cancelTransaction();
+                        if (mRealm.isInTransaction()) {
+                            mRealm.cancelTransaction();
                         }
                         throw new RuntimeException(e);
                     }
-
                 } catch (JSONException e) {
                     Log.d(TAG, "Error int getting response or docs.", e);
                 }
@@ -218,6 +236,7 @@ public class SearchArticlesViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                mStatus.setValue(DataLoadingStatus.ERROR);
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });
@@ -263,7 +282,10 @@ public class SearchArticlesViewModel extends AndroidViewModel {
         // Reset the isFinishLoading because there is no articles to show
         isFinishLoading.setValue(false);
         // Delete all the articles in the database
-        dao.deleteAll();
+        mRealm.executeTransaction(realm -> realm.deleteAll());
+        // remove all the articles in the adapter
+        articles.clear();
+        mAdapter.setArticles(articles);
         // Fetch the article online and insert them into the database and show them
         fetchArticle(0);
     }
@@ -271,8 +293,17 @@ public class SearchArticlesViewModel extends AndroidViewModel {
     // Refresh the data by swipeRefreshLayout
     public void swipRefresh(){
         isFinishLoading.setValue(false);
-        dao.deleteAll();
+        mRealm.executeTransaction(realm -> realm.deleteAll());
+        // remove all the articles in the adapter
+        articles.clear();
+        mAdapter.setArticles(articles);
         fetchArticle(0);
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mRealm.close();
     }
 
     // Set the article to passed to the detail fragment
@@ -280,30 +311,34 @@ public class SearchArticlesViewModel extends AndroidViewModel {
         navigateToSelectedArticle.setValue(article);
     }
 
+    public boolean isConnected(){
+        ConnectivityManager cm =
+                (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+
+
     // After navigate to detail fragment, reset its state
     public void displayArticleDetailsComplete() {
         navigateToSelectedArticle.setValue(null);
     }
 
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        realm.close();
-    }
-
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
         @NonNull
-        private final Application mApplication;
+        private final Context mContext;
 
-        public Factory(@NonNull Application application) {
-            mApplication = application;
+        public Factory(@NonNull Context context) {
+            mContext = context;
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new SearchArticlesViewModel(mApplication);
+            return (T) new SearchArticlesViewModel(mContext);
         }
     }
 }

@@ -24,11 +24,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import ai.tomorrow.findarticles.R;
 import ai.tomorrow.findarticles.settings.SettingFragment;
-import ai.tomorrow.findarticles.database.entity.Article;
+import ai.tomorrow.findarticles.models.Article;
 import ai.tomorrow.findarticles.databinding.FragmentSearchNewsBinding;
 import ai.tomorrow.findarticles.util.DataLoadingStatus;
 import ai.tomorrow.findarticles.util.EndlessRecyclerViewScrollListener;
-import io.realm.RealmResults;
 
 public class SearchArticlesFragment extends Fragment {
 
@@ -37,8 +36,6 @@ public class SearchArticlesFragment extends Fragment {
     private SearchArticlesViewModel mViewModel;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    // Adapter for GridLayout
-    private ArticlesGridAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private StaggeredGridLayoutManager layoutManager;
 
@@ -67,15 +64,7 @@ public class SearchArticlesFragment extends Fragment {
         // Get the swipeRefreshLayout
         mSwipeRefreshLayout = mBinding.swipeLayout;
 
-        // Initialize the adapter, and set the click listener. When clicked on the item, change the
-        // navigateToSelectedArticle value in the viewModel and navigate to the detailFragment
-        mAdapter = new ArticlesGridAdapter(new ArticlesGridAdapter.ItemClickListener() {
-            @Override
-            public void onListItemClick(Article article) {
-                mViewModel.displayArticleDetails(article);
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mViewModel.mAdapter);
 
         // Set the StaggeredGridLayoutManager
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -88,25 +77,21 @@ public class SearchArticlesFragment extends Fragment {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 Log.d(TAG, "page = " + page);
-                mViewModel.fetchArticle(page);
+                if (mViewModel.isConnected()){
+                    mViewModel.fetchArticle(page);
+                }
             }
         };
         // Adds the scroll listener to RecyclerView
         mRecyclerView.addOnScrollListener(scrollListener);
 
-        mViewModel.getArticles().observe(this, new Observer<RealmResults<Article>>() {
-            @Override
-            public void onChanged(RealmResults<Article> articles) {
-                mAdapter.setArticles(articles);
-            }
-        });
 
         // When the first page of the web query is loaded, then change the loading indicator status.
         mViewModel.getIsFinishLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isFinishLoading) {
                 if (isFinishLoading){
-                    if (null == mViewModel.getArticles().getValue() || mViewModel.getArticles().getValue().isEmpty()){
+                    if (null == mViewModel.getArticles() || mViewModel.getArticles().isEmpty()){
                         // If the data is finish loading and it's empty, loading status to EMPTY
                         mViewModel.mStatus.setValue(DataLoadingStatus.EMPTY);
                     } else {
@@ -189,5 +174,12 @@ public class SearchArticlesFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+        Log.d(TAG, "mViewModel.getArticles().getValue() = " + mViewModel.getArticles());
     }
 }

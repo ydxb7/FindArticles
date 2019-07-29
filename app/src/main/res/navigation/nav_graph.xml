@@ -20,6 +20,6 @@
         tools:layout="@layout/fragment_article_detail" >
         <argument
             android:name="selectedArticle"
-            app:argType="ai.tomorrow.findarticles.database.entity.Article" />
+            app:argType="ai.tomorrow.findarticles.models.Article" />
     </fragment>
 </navigation>
