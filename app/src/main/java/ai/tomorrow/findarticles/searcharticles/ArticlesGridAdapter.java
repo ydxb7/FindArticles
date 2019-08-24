@@ -11,12 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ai.tomorrow.findarticles.R;
-import ai.tomorrow.findarticles.models.Article;
 import ai.tomorrow.findarticles.databinding.GridViewItemBinding;
 import ai.tomorrow.findarticles.databinding.GridViewItemNoImageBinding;
+import ai.tomorrow.findarticles.models.Article;
 
 public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-//        RecyclerView.Adapter<ArticlesGridAdapter.ArticlesViewHolder>{
 
     private static final String TAG = ArticlesGridAdapter.class.getSimpleName();
 
@@ -30,37 +29,23 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     // from the Fragment where adapter is created.
     private final ItemClickListener mOnClickListener;
 
-//    private static DiffUtil.ItemCallback<Article> diffCallback = new DiffUtil.ItemCallback<Article>() {
-//
-//        @Override
-//        public boolean areItemsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
-//            return oldItem == newItem;
-//        }
-//
-//        @Override
-//        public boolean areContentsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
-//            return oldItem.getId().equals(newItem.getId());
-//        }
-//    };
-
     // Add an interface called ListItemClickListener
     // Within that interface, define a void method called onListItemClick that takes an int as a parameter
-    public interface ItemClickListener{
+    public interface ItemClickListener {
         void onListItemClick(Article article);
     }
 
 
-    public ArticlesGridAdapter(ItemClickListener listener){
+    public ArticlesGridAdapter(ItemClickListener listener) {
         mOnClickListener = listener;
-//        super(diffCallback);
     }
 
-    public void setArticles(List<Article> articles){
+    public void setArticles(List<Article> articles) {
         // When the search articles updated, we update the whole dataset
-        if (this.articles == null){
+        if (this.articles == null) {
             this.articles = articles;
             notifyDataSetChanged();
-        } else if (articles.size() == 0){
+        } else if (articles.size() == 0) {
             // clear the database
             notifyDataSetChanged();
         } else {
@@ -69,14 +54,13 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.articles = articles;
             notifyItemInserted(oldSize);
         }
-
     }
 
     // Get the view type for the Article according to whether there is image in Article
     @Override
     public int getItemViewType(int position) {
         Article article = this.articles.get(position);
-        if (article.getThumbnail() == null){
+        if (article.getThumbnail() == null) {
             return VIEW_TYPE_NO_IMAGE;
         } else {
             return VIEW_TYPE_WITH_IMAGE;
@@ -93,7 +77,7 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
         // Inflater different layout from its view type
-        switch (viewType){
+        switch (viewType) {
             case VIEW_TYPE_WITH_IMAGE:
                 return new ArticlesViewHolder(DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()),
                         R.layout.grid_view_item, viewGroup, false));
@@ -103,7 +87,6 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
         }
-
     }
 
     @Override
@@ -116,12 +99,12 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 mOnClickListener.onListItemClick(article);
             }
         });
-        switch (viewType){
+        switch (viewType) {
             case VIEW_TYPE_WITH_IMAGE:
-                ((ArticlesViewHolder)holder).bind(article);
+                ((ArticlesViewHolder) holder).bind(article);
                 break;
             case VIEW_TYPE_NO_IMAGE:
-                ((ArticlesViewHolderNoImage)holder).bind(article);
+                ((ArticlesViewHolderNoImage) holder).bind(article);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
@@ -133,7 +116,7 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         GridViewItemBinding mBinding;
 
-        public ArticlesViewHolder(GridViewItemBinding binding){
+        public ArticlesViewHolder(GridViewItemBinding binding) {
             super(binding.getRoot());
 
             mBinding = binding;
@@ -145,15 +128,14 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // which allows the RecyclerView to make the correct view size measurements
             mBinding.executePendingBindings();
         }
-
     }
 
     // ViewHolder without image
-    class ArticlesViewHolderNoImage extends RecyclerView.ViewHolder{
+    class ArticlesViewHolderNoImage extends RecyclerView.ViewHolder {
 
         GridViewItemNoImageBinding mBinding;
 
-        public ArticlesViewHolderNoImage(GridViewItemNoImageBinding binding){
+        public ArticlesViewHolderNoImage(GridViewItemNoImageBinding binding) {
             super(binding.getRoot());
 
             mBinding = binding;
@@ -165,7 +147,5 @@ public class ArticlesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // which allows the RecyclerView to make the correct view size measurements
             mBinding.executePendingBindings();
         }
-
     }
-
 }

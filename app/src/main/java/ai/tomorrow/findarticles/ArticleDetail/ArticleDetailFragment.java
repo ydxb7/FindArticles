@@ -24,8 +24,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import ai.tomorrow.findarticles.R;
-import ai.tomorrow.findarticles.models.Article;
 import ai.tomorrow.findarticles.databinding.FragmentArticleDetailBinding;
+import ai.tomorrow.findarticles.models.Article;
 
 
 public class ArticleDetailFragment extends Fragment {
@@ -74,7 +74,7 @@ public class ArticleDetailFragment extends Fragment {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // Check if the key event was the Back button and if there's history
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == event.KEYCODE_BACK){
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
                     if (myWebView.canGoBack()) {
                         myWebView.goBack();
                     } else {
@@ -110,7 +110,6 @@ public class ArticleDetailFragment extends Fragment {
             view.loadUrl(request.getUrl().toString());
             return true;
         }
-
     }
 
     @Override
@@ -123,7 +122,7 @@ public class ArticleDetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         // Share intent to share the url
-        if (id == R.id.action_share){
+        if (id == R.id.action_share) {
             String textToShare = mArticle.getWebUrl();
             prepareShareIntent(textToShare);
             return true;

@@ -21,11 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
 import ai.tomorrow.findarticles.R;
 import ai.tomorrow.findarticles.databinding.FragmentSearchArticalsBinding;
-import ai.tomorrow.findarticles.settings.SettingFragment;
 import ai.tomorrow.findarticles.models.Article;
+import ai.tomorrow.findarticles.settings.SettingFragment;
 import ai.tomorrow.findarticles.util.DataLoadingStatus;
 import ai.tomorrow.findarticles.util.EndlessRecyclerViewScrollListener;
 
@@ -59,7 +58,7 @@ public class SearchArticlesFragment extends Fragment {
         // Set the viewModel in the xml
         mBinding.setSearchViewModel(mViewModel);
 
-        mRecyclerView = (RecyclerView) mBinding.newsGrid;
+        mRecyclerView = mBinding.newsGrid;
 
         // Get the swipeRefreshLayout
         mSwipeRefreshLayout = mBinding.swipeLayout;
@@ -77,7 +76,7 @@ public class SearchArticlesFragment extends Fragment {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 Log.d(TAG, "page = " + page);
-                if (mViewModel.isConnected()){
+                if (mViewModel.isConnected()) {
                     mViewModel.fetchArticle(page);
                 }
             }
@@ -90,8 +89,8 @@ public class SearchArticlesFragment extends Fragment {
         mViewModel.getIsFinishLoading().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isFinishLoading) {
-                if (isFinishLoading){
-                    if (null == mViewModel.getArticles() || mViewModel.getArticles().isEmpty()){
+                if (isFinishLoading) {
+                    if (null == mViewModel.getArticles() || mViewModel.getArticles().isEmpty()) {
                         // If the data is finish loading and it's empty, loading status to EMPTY
                         mViewModel.mStatus.setValue(DataLoadingStatus.EMPTY);
                     } else {
@@ -108,7 +107,7 @@ public class SearchArticlesFragment extends Fragment {
         mViewModel.getNavigateToSelectedArticle().observe(this, new Observer<Article>() {
             @Override
             public void onChanged(Article article) {
-                if (null != article){
+                if (null != article) {
                     Navigation.findNavController(getView()).navigate(SearchArticlesFragmentDirections
                             .actionSearchArticlesFragmentToArticleDetailFragment(article));
                     // Navigate to detail fragment complete
@@ -126,7 +125,8 @@ public class SearchArticlesFragment extends Fragment {
 
         // when the refresh setOnRefreshListener 刷新监听
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override public void onRefresh() {
+            @Override
+            public void onRefresh() {
                 // loading indicator start to rotate
                 mSwipeRefreshLayout.setRefreshing(true);
 
@@ -160,13 +160,13 @@ public class SearchArticlesFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings){
+        if (id == R.id.action_settings) {
             // Open the setting fragment to change the preference
             SettingFragment settingFragment = new SettingFragment();
             settingFragment.show(getFragmentManager(), SettingFragment.class.getSimpleName());
             // When back from the setting fragment, search the result and refresh the recyclerView
             settingFragment.setCallback(() -> {
-                if (mViewModel.isSearchChanged()){
+                if (mViewModel.isSearchChanged()) {
                     mViewModel.updateSearch();
                     scrollListener.resetState();
                 }

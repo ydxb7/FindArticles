@@ -39,7 +39,7 @@ public class SettingFragment extends DialogFragment {
         viewModel.getNavigateBack().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isNagigateBack) {
-                if (isNagigateBack){
+                if (isNagigateBack) {
                     getDialog().dismiss();
                     viewModel.navigateBackCompelete();
                     // this method is passed from where the Setting fragment is created, we will update
@@ -58,8 +58,7 @@ public class SettingFragment extends DialogFragment {
     }
 
     // create a interface, we will implement where the SettingFragment is created
-    public interface SettingFragmentCallback{
+    public interface SettingFragmentCallback {
         void onDialogDismiss();
     }
-
 }

@@ -47,11 +47,12 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
     private int mBginDate;
 
     private MutableLiveData<Boolean> navigateBack = new MutableLiveData<>();
-    public LiveData<Boolean> getNavigateBack(){
+
+    public LiveData<Boolean> getNavigateBack() {
         return navigateBack;
     }
 
-    public void navigateBackCompelete(){
+    public void navigateBackCompelete() {
         navigateBack.setValue(false);
     }
 
@@ -99,10 +100,9 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
             int dayOfMonth = myBgindate % 100;
             int monthOfYear = (myBgindate / 100) % 100;
             int year = myBgindate / 10000;
-            String date = String.format(Locale.US,"%02d/%02d/%04d", monthOfYear, dayOfMonth, year);
+            String date = String.format(Locale.US, "%02d/%02d/%04d", monthOfYear, dayOfMonth, year);
             mBinding.dateEditText.setText(date);
         }
-
     }
 
     // When the saved button is clicked, we save the preference
@@ -119,7 +119,7 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
     }
 
     // Clean the date picked from the DatePicker
-    public void onClickCleanButton(){
+    public void onClickCleanButton() {
         mEditor.putInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
         mBinding.dateEditText.setText("");
     }
@@ -158,7 +158,7 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
     // Called when the date is saved
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = String.format(Locale.US,"%02d/%02d/%04d", ++monthOfYear, dayOfMonth, year);
+        String date = String.format(Locale.US, "%02d/%02d/%04d", ++monthOfYear, dayOfMonth, year);
         // Set the Edit text value
         mBinding.dateEditText.setText(date);
         dpd = null;
@@ -182,5 +182,4 @@ public class SettingViewModel extends ViewModel implements DatePickerDialog.OnDa
             return (T) new SettingViewModel(mContext, mBinding);
         }
     }
-
 }

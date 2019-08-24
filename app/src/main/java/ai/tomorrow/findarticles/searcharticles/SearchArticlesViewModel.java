@@ -71,7 +71,7 @@ public class SearchArticlesViewModel extends ViewModel {
     private Realm mRealm = Realm.getDefaultInstance();
 
     // LiveData realm results
-    private ArrayList<Article> articles= new ArrayList<>();
+    private ArrayList<Article> articles = new ArrayList<>();
 
     public List<Article> getArticles() {
         return articles;
@@ -90,7 +90,7 @@ public class SearchArticlesViewModel extends ViewModel {
     // is first time articles finish loaded
     private MutableLiveData<Boolean> isFinishLoading = new MutableLiveData<>();
 
-    public LiveData<Boolean> getIsFinishLoading(){
+    public LiveData<Boolean> getIsFinishLoading() {
         return isFinishLoading;
     }
 
@@ -133,7 +133,7 @@ public class SearchArticlesViewModel extends ViewModel {
         mSort = mPreferences.getBoolean(PREF_SPORTS_KEY, PREF_SPORTS_DEFAULT);
         mBgindate = mPreferences.getInt(PREF_BEGIN_DATE_KEY, PREF_BEGIN_DATE_DEFAULT);
 
-        if (!isConnected()){
+        if (!isConnected()) {
             // articles are got from database
             mStatus.setValue(DataLoadingStatus.LOADING);
             articles.addAll(mRealm.where(Article.class).findAll());
@@ -187,7 +187,7 @@ public class SearchArticlesViewModel extends ViewModel {
         }
 
         // params from SearchView
-        if (!mQuery.isEmpty()){
+        if (!mQuery.isEmpty()) {
             params.put("q", mQuery);
         }
 
@@ -291,7 +291,7 @@ public class SearchArticlesViewModel extends ViewModel {
     }
 
     // Refresh the data by swipeRefreshLayout
-    public void swipRefresh(){
+    public void swipRefresh() {
         // there is no data to show
         isFinishLoading.setValue(false);
         // delete all data in the database
@@ -313,9 +313,9 @@ public class SearchArticlesViewModel extends ViewModel {
         navigateToSelectedArticle.setValue(article);
     }
 
-    public boolean isConnected(){
+    public boolean isConnected() {
         ConnectivityManager cm =
-                (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&

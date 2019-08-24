@@ -8,11 +8,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import ai.tomorrow.findarticles.ArticleDetail.ArticleDetailFragment;
-
 public class MainActivity extends AppCompatActivity {
-
-    private String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = "MainActivity";
     private Fragment mCurrentFragment;
     private NavController navController;
 
@@ -26,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         // By calling NavigationUI.setupActionBarWithNavController
         NavigationUI.setupActionBarWithNavController(this, navController);
-
     }
 
     // Find the navController and then call navController.navigateUp
@@ -34,5 +30,4 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         return navController.navigateUp();
     }
-
 }

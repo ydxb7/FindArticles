@@ -24,7 +24,7 @@ public class Article extends RealmObject implements Parcelable {
     private String thumbnail;
     private String snippet;
 
-    public Article(){
+    public Article() {
 
     }
 
@@ -70,9 +70,8 @@ public class Article extends RealmObject implements Parcelable {
         return snippet;
     }
 
-
     // Parse one article instance from Json object
-    public static Article ParseJson(JSONObject articleJson){
+    public static Article ParseJson(JSONObject articleJson) {
         Article article = new Article();
         try {
             article.id = articleJson.getString("_id");
@@ -82,7 +81,7 @@ public class Article extends RealmObject implements Parcelable {
             // Get the headline for Article
             JSONObject headlineJSONObject = articleJson.getJSONObject("headline");
             String printHeadline = headlineJSONObject.getString("print_headline");
-            if (printHeadline != "null"){
+            if (printHeadline != "null") {
                 article.headline = printHeadline;
             } else {
                 article.headline = headlineJSONObject.getString("main");
@@ -90,9 +89,9 @@ public class Article extends RealmObject implements Parcelable {
 
             // Get the thumbnail
             JSONArray multimedia = articleJson.getJSONArray("multimedia");
-            if (multimedia != null && multimedia.length() > 0){
+            if (multimedia != null && multimedia.length() > 0) {
                 JSONObject multimedia0 = multimedia.getJSONObject(0);
-                article.thumbnail= multimedia0.getString("url");
+                article.thumbnail = multimedia0.getString("url");
             }
 
         } catch (JSONException e) {
@@ -104,9 +103,9 @@ public class Article extends RealmObject implements Parcelable {
     }
 
     // Parse the ArticleList from the JsonArray
-    public static RealmList<Article> parseJsonIntoArticleList(JSONArray articleJsonResults){
+    public static RealmList<Article> parseJsonIntoArticleList(JSONArray articleJsonResults) {
         RealmList<Article> articleRealmList = new RealmList<>();
-        for (int i = 0; i < articleJsonResults.length(); i++){
+        for (int i = 0; i < articleJsonResults.length(); i++) {
             try {
                 articleRealmList.add(ParseJson(articleJsonResults.getJSONObject(i)));
             } catch (JSONException e) {
@@ -131,11 +130,4 @@ public class Article extends RealmObject implements Parcelable {
         dest.writeString(thumbnail);
         dest.writeString(snippet);
     }
-
-//    public static RealmResults<Article> getAllArticles(){
-//        Realm realm = Realm.getDefaultInstance();
-//        RealmResults<Article> articles =  realm.where(Article.class).findAll();
-//        realm.close();
-//        return articles;
-//    }
 }
