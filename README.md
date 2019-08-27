@@ -4,6 +4,12 @@
 
 Time spent: A week spent in total
 
+## Video Walkthrough
+
+Here's a walkthrough of the app:
+
+![Video Walkthrough 1](show_FindArticles.gif)
+
 ## User Stories
 
 I use **Java** to compelete this Application. The following **required** functionality is completed:
@@ -49,12 +55,6 @@ The following **additional** features are implemented:
 * [X] Use Fragment
 * [X] Use navigation
 * [X] Add launch icon
-
-## Video Walkthrough
-
-Here's a walkthrough of implemented user stories:
-
-![Video Walkthrough 1](show_FindArticles.gif)
 
 ## Open-source libraries used
 
